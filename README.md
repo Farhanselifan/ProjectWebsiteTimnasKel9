@@ -3,12 +3,15 @@
 🔹 1. Clone Repo (sekali saja di awal)
 
 Kalau belum punya repo di laptop:
+
 git clone https://github.com/Farhanselifan/WordPressProjectKel9.git
+
 cd WordPressProjectKel9
 --------------------------------------------------------------------------------------
 🔹 2. Cek Status Repo
 
 Sebelum kerja:
+
 git status
 
 👉 Lihat apakah ada file yang berubah/harus di-commit.
@@ -16,6 +19,7 @@ git status
 🔹 3. Update dari GitHub (Wajib Sebelum Mulai Kerja)
 
 Supaya update dari teman masuk dulu:
+
 git pull origin main --rebase
 --------------------------------------------------------------------------------------
 🔹 4. Tambahkan File yang Kamu Ubah
@@ -35,6 +39,7 @@ git push origin main
 🔹 7. Cek Remote Repo
 
 Kalau mau cek koneksi remote:
+
 git remote -v
 --------------------------------------------------------------------------------------
 🔹 8. Cek Branch Aktif
