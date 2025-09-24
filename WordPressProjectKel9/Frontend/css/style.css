@@ -1,0 +1,29 @@
+/* Hero Section */
+.hero {
+  background: url('../images/stadion.jpg') center/cover no-repeat;
+  color: white;
+  padding: 180px 20px;
+  position: relative;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+}
+
+.hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+.news img {
+  height: 200px;
+  object-fit: cover;
+}
