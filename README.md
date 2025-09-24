@@ -55,5 +55,6 @@ git push origin fitur-profil
 
 Setelah selesai, merge lewat GitHub Pull Request.
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 📌 Dengan cheatsheet ini kamu tinggal ikuti alur:
 pull → edit → add → commit → push
