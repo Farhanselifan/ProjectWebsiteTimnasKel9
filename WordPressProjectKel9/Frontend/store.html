@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Store Timnas Indonesia</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Sticky footer setup */
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      flex: 1; /* dorong footer ke bawah */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">Timnas Indonesia</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+          <li class="nav-item"><a class="nav-link active" href="store.html">Store</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Konten Utama -->
+  <main>
+    <!-- Header -->
+    <header class="py-5 bg-danger text-white text-center">
+      <div class="container">
+        <h1 class="fw-bold">Store Merchandise Timnas Indonesia</h1>
+        <p class="lead">Dukung Garuda dengan membeli merchandise resmi</p>
+      </div>
+    </header>
+
+    <!-- Produk -->
+    <section class="container my-5">
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm text-center">
+            <img src="images/jersey.jpg" class="card-img-top" alt="Jersey Timnas">
+            <div class="card-body">
+              <h5 class="card-title">Jersey Timnas Home 2025</h5>
+              <p class="text-danger fw-bold">Rp 350.000</p>
+              <a href="#" class="btn btn-danger">Beli Sekarang</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm text-center">
+            <img src="images/topi.jpg" class="card-img-top" alt="Topi Timnas">
+            <div class="card-body">
+              <h5 class="card-title">Topi Timnas Garuda</h5>
+              <p class="text-danger fw-bold">Rp 120.000</p>
+              <a href="#" class="btn btn-danger">Beli Sekarang</a>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm text-center">
+            <img src="images/syal.jpg" class="card-img-top" alt="Syal Timnas">
+            <div class="card-body">
+              <h5 class="card-title">Syal Suporter Garuda</h5>
+              <p class="text-danger fw-bold">Rp 80.000</p>
+              <a href="#" class="btn btn-danger">Beli Sekarang</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-danger text-white text-center py-3">
+    <p>&copy; 2025 Timnas Indonesia | Ikuti kami di 
+      <a href="#" class="text-white">Instagram</a> • 
+      <a href="#" class="text-white">Facebook</a> • 
+      <a href="#" class="text-white">Twitter</a>
+    </p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
