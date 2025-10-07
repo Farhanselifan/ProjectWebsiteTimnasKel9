@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Profil Timnas Indonesia</title>
+  <style>
+    /* ==== Reset dan dasar ==== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: #f8fafc;
+    }
+
+    /* ==== Bagian kiri ==== */
+    .left {
+      width: 50%;
+      background: linear-gradient(180deg, #d00000 0%, #a50000 100%);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      padding: 2rem;
+    }
+
+    .logo-area {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-text h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    .logo-text p {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .illustration {
+      width: 70%;
+      max-width: 350px;
+      margin-top: 4rem;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.3));
+    }
+
+    .back-btn {
+      margin-top: 2rem;
+      padding: 0.6rem 1.8rem;
+      background-color: white;
+      color: #a50000;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+
+    .back-btn:hover {
+      background-color: #f1f1f1;
+      transform: scale(1.05);
+    }
+
+    /* ==== Bagian kanan ==== */
+    .right {
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #ffffff;
+      background-image: url('images/stadion.jpg');
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .login-box {
+      position: relative;
+      z-index: 1;
+      background-color: white;
+      width: 100%;
+      max-width: 400px;
+      padding: 2.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .login-box h2 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #a50000;
+    }
+
+    .social-btn {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      background-color: white;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: background 0.3s;
+    }
+
+    .social-btn:hover {
+      background-color: #f3f4f6;
+    }
+
+    hr {
+      margin-bottom: 1.5rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #374151;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      margin-top: 0.3rem;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .login-btn {
+      background-color: #d00000;
+      border: none;
+      border-radius: 6px;
+      padding: 0.7rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .login-btn:hover {
+      background-color: #a50000;
+    }
+
+    .signup-text {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .signup-text a {
+      font-weight: 700;
+      color: #d00000;
+      text-decoration: none;
+    }
+
+    .signup-text a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 900px) {
+      .left {
+        display: none;
+      }
+      .right {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bagian kiri -->
+  <div class="left">
+    <div class="logo-area">
+      <div class="logo-text">
+        <h1>Timnas Indonesia</h1>
+        <p>Merah Putih di Hati, Garuda di Dada</p>
+      </div>
+    </div>
+    <img src="images/garuda-logo.png" alt="Ilustrasi Pemain" class="illustration">
+    <a href="index.html" class="back-btn">Kembali ke Beranda</a>
+  </div>
+
+  <!-- Bagian kanan -->
+  <div class="right">
+    <div class="overlay"></div>
+    <div class="login-box">
+      <h2>Masuk ke Profil Timnas</h2>
+
+      <button class="social-btn">
+        <span style="color:#555;">G</span>
+        <span>Masuk dengan Google</span>
+      </button>
+
+      <hr>
+
+      <form onsubmit="alert('Login berhasil!'); return false;">
+        <div>
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Masukkan Username" required>
+        </div>
+
+        <div>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Masukkan Password" required>
+        </div>
+
+        <div class="remember">
+          <input type="checkbox" id="remember">
+          <label for="remember">Ingat saya</label>
+        </div>
+
+        <button type="submit" class="login-btn">Masuk</button>
+      </form>
+
+      <div class="signup-text">
+        <!-- Ubah href="#" menjadi href="register.html" -->
+        <p>Belum punya akun? <a href="register.html">Daftar Sekarang</a></p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
