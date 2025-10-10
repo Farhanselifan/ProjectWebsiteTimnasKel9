@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Timnas Indonesia</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    
+    <link rel="preload" href="images/stadion.jpg" as="image">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>Timnas Indonesia</title>
 </head>
 <body>
 
@@ -27,6 +36,7 @@
           <li class="nav-item"><a class="nav-link" href="sejarah.html">Sejarah & Prestasi</a></li>
           <!-- 🔗 Tautan Store -->
           <li class="nav-item"><a class="nav-link" href="store.html">Store</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">Penulis</a></li>
         </ul>
       </div>
     </div>
@@ -38,13 +48,12 @@
       <h1 class="display-4 fw-bold">Garuda di Dadaku</h1>
       <p class="lead">Tim Nasional Sepak Bola Indonesia</p>
       <a href="#fixtures" class="btn btn-light btn-lg mt-3 me-2">Lihat Jadwal</a>
-      <!-- 🔗 Tombol ke Store -->
-      <a href="store.html" class="btn btn-outline-light btn-lg mt-3">Kunjungi Store</a>
+      <a href="store.html" class="btn btn-outline-gold btn-lg mt-3">Kunjungi Store</a>
     </div>
   </section>
 
   <!-- Berita -->
-  <section id="news" class="container my-5">
+  <section id="news" class="container py-5">
     <h2 class="mb-4">Berita Terbaru</h2>
     <div class="row g-4">
       <div class="col-md-4">
@@ -62,12 +71,12 @@
   </section>
 
   <!-- Squad -->
-  <section id="squad" class="container my-5">
+  <section id="squad" class="container py-5">
     <h2 class="mb-4">Skuad Timnas</h2>
     <div class="row g-4">
       <div class="col-md-3">
         <div class="card shadow">
-          <img src="images/asnawi.jpg" class="card-img-top" alt="Asnawi">
+          <img loading="lazy" src="images/asnawi.jpg" class="card-img-top" alt="Asnawi">
           <div class="card-body text-center">
             <h6 class="card-title">Asnawi Mangkualam</h6>
             <p class="text-muted">Bek</p>
@@ -79,9 +88,10 @@
   </section>
 
   <!-- Fixtures -->
-  <section id="fixtures" class="container my-5">
+  <section id="fixtures" class="container py-5">
     <h2 class="mb-4">Jadwal Pertandingan</h2>
     <table class="table table-striped table-bordered">
+      <caption>Jadwal Pertandingan Timnas Indonesia</caption>
       <thead class="table-danger">
         <tr>
           <th>Tanggal</th>
@@ -100,11 +110,11 @@
   </section>
 
   <!-- Gallery -->
-  <section id="gallery" class="container my-5">
+  <section id="gallery" class="container py-5">
     <h2 class="mb-4">Galeri</h2>
     <div class="row g-4">
       <div class="col-md-4">
-        <img src="images/gallery1.jpg" class="img-fluid rounded shadow" alt="Foto 1">
+        <img loading="lazy" src="images/gallery1.jpg" class="img-fluid rounded shadow" alt="Foto 1">
       </div>
       <!-- Tambahkan foto lain -->
     </div>
