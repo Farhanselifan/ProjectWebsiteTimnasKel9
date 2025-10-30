@@ -1,0 +1,27 @@
+import "./globals.css";
+
+export const metadata = {
+  title: "Timnas Indonesia",
+  description: "Website Tim Nasional Sepak Bola Indonesia",
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="id">
+      <body>
+        <nav className="navbar">
+          <div className="navbar-logo">Timnas Indonesia</div>
+          <ul className="navbar-menu">
+            <li><a href="#berita">Berita</a></li>
+            <li><a href="#pemain">Pemain</a></li>
+            <li><a href="#jadwal">Jadwal</a></li>
+            <li><a href="#store">Store</a></li>
+            <li><a href="#">Login</a></li>
+          </ul>
+        </nav>
+
+        {children}
+      </body>
+    </html>
+  );
+}
