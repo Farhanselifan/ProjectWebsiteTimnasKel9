@@ -401,3 +401,204 @@ html {
     justify-content: center;
   }
 }
+
+/* globals.css atau app/globals.css */
+
+.store-page {
+  min-height: 100vh;
+  background: #f9f9fb;
+}
+
+.store-hero {
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/store/hero-bg.jpg') center/cover no-repeat;
+  color: white;
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.store-hero h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+}
+
+.store-hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.products-section {
+  padding: 60px 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.2rem;
+  margin-bottom: 3rem;
+  color: #d32f2f;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.product-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
+
+.badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  z-index: 1;
+}
+
+.badge-official { background: #d32f2f; color: white; }
+.badge-limited { background: #ff6b00; color: white; }
+.badge-new { background: #00c853; color: white; }
+
+.product-image {
+  height: 500px;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.08);
+}
+
+.product-info {
+  padding: 1.2rem;
+  text-align: center;
+}
+
+.product-info h3 {
+  font-size: 1.1rem;
+  margin: 0 0 0.5rem;
+  color: #333;
+  line-height: 1.4;
+}
+
+.price {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #d32f2f;
+  margin: 0.5rem 0;
+}
+
+.btn-buy {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.btn-buy:hover {
+  background: #b71c1c;
+}
+
+.back-link {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 1.1rem;
+}
+
+.back-link a {
+  color: #d32f2f;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+}
+
+/* === STORE PAGE STYLES === */
+.store-hero {
+  position: relative;
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+              url('/images/store/hero-bg.jpg') center/cover no-repeat;
+  color: white;
+  text-align: center;
+  padding: 120px 20px;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(211, 47, 47, 0.4);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+
+.store-hero h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+}
+
+.store-hero p {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.btn-shop-now {
+  background: linear-gradient(45deg, #d32f2f, #f44336);
+  color: white;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 8px 20px rgba(211, 47, 47, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-shop-now:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(211, 47, 47, 0.5);
+}
