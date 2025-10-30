@@ -15,8 +15,8 @@ export default function RootLayout({ children }) {
             <li><a href="#berita">Berita</a></li>
             <li><a href="#pemain">Pemain</a></li>
             <li><a href="#jadwal">Jadwal</a></li>
-            <li><a href="#store">Store</a></li>
-            <li><a href="#">Login</a></li>
+            <li><a href="/store">Store</a></li>
+            <li><a href="/login">Login</a></li>
           </ul>
         </nav>
 
