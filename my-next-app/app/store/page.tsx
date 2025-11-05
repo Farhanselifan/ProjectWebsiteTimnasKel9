@@ -20,9 +20,9 @@ export default function StorePage() {
     },
     {
       id: 3,
-      name: "Training Kit Timnas 2025",
+      name: "Bundle Kit Timnas 2025",
       price: "Rp 650.000",
-      image: "/images/store/trainingkit.jpg",
+      image: "/images/store/timnasbundle.jpg",
       badge: "New",
     },
   ];
@@ -34,15 +34,16 @@ export default function StorePage() {
         className="store-hero"
         style={{
           textAlign: "center",
+          height: "250px",
           padding: "60px 20px",
           background: "linear-gradient(135deg, #e60000, #ff9900)",
           color: "white",
         }}
       >
-        <h1 style={{ fontSize: "42px", marginBottom: "10px" }}>
+        <h1 style={{ fontSize: "30px", marginBottom: "10px" }}>
           Official Store Timnas Indonesia
         </h1>
-        <p style={{ fontSize: "18px" }}>
+        <p style={{ fontSize: "13px" }}>
           Dukung Garuda dengan merchandise resmi berkualitas tinggi!
         </p>
         <Link
