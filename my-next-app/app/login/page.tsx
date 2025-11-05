@@ -1,14 +1,71 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const [username, setUsername] = useState("");
+  const router = useRouter();
+  const [emailOrUsername, setEmailOrUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Logged in as: ${username}`);
+    setError(null);
+
+    if (!emailOrUsername || !password) {
+      setError("Email/Username dan password wajib diisi.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          // backend contoh memakai `email`, jika kamu pakai username ganti sesuai backend
+          email: emailOrUsername,
+          password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data?.error || "Gagal login.");
+        setLoading(false);
+        return;
+      }
+
+      // data.token diharapkan dikembalikan oleh API
+      const token = data?.token;
+      if (token) {
+        // untuk demo: simpan token di localStorage
+        // jika ingin lebih aman: gunakan cookie HttpOnly dari server
+        if (remember) {
+          localStorage.setItem("auth_token", token);
+        } else {
+          // simpan di sessionStorage jika tidak pilih "ingat saya"
+          sessionStorage.setItem("auth_token", token);
+        }
+      }
+
+      // optional: simpan role juga (data.role)
+      if (data?.role) {
+        localStorage.setItem("role", data.role);
+      }
+
+      // redirect to home or dashboard
+      router.push("/");
+    } catch (err) {
+      console.error(err);
+      setError("Terjadi kesalahan jaringan. Coba lagi.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -57,6 +114,11 @@ export default function LoginPage() {
             marginBottom: "20px",
             backgroundColor: "#fff",
           }}
+          type="button"
+          onClick={() => {
+            // placeholder: integrasi Google OAuth bisa ditambahkan nanti
+            alert("Fungsi Google sign-in belum diimplementasikan.");
+          }}
         >
           G Masuk dengan Google
         </button>
@@ -66,13 +128,13 @@ export default function LoginPage() {
         <form onSubmit={handleLogin}>
           <div style={{ textAlign: "left", marginBottom: "10px" }}>
             <label style={{ fontWeight: "600", fontSize: "14px" }}>
-              Username
+              Email / Username
             </label>
             <input
               type="text"
-              placeholder="Masukkan Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Masukkan Email atau Username"
+              value={emailOrUsername}
+              onChange={(e) => setEmailOrUsername(e.target.value)}
               style={{
                 width: "100%",
                 padding: "10px",
@@ -80,6 +142,7 @@ export default function LoginPage() {
                 border: "1px solid #ccc",
                 marginTop: "6px",
               }}
+              disabled={loading}
             />
           </div>
 
@@ -99,6 +162,7 @@ export default function LoginPage() {
                 border: "1px solid #ccc",
                 marginTop: "6px",
               }}
+              disabled={loading}
             />
           </div>
 
@@ -110,11 +174,21 @@ export default function LoginPage() {
               marginBottom: "20px",
             }}
           >
-            <input type="checkbox" id="remember" />
+            <input
+              type="checkbox"
+              id="remember"
+              checked={remember}
+              onChange={(e) => setRemember(e.target.checked)}
+              disabled={loading}
+            />
             <label htmlFor="remember" style={{ fontSize: "14px" }}>
               Ingat saya
             </label>
           </div>
+
+          {error && (
+            <p style={{ color: "crimson", marginBottom: "10px" }}>{error}</p>
+          )}
 
           <button
             type="submit"
@@ -126,11 +200,13 @@ export default function LoginPage() {
               border: "none",
               borderRadius: "8px",
               fontWeight: "600",
-              cursor: "pointer",
+              cursor: loading ? "not-allowed" : "pointer",
               marginBottom: "10px",
+              opacity: loading ? 0.7 : 1,
             }}
+            disabled={loading}
           >
-            Masuk
+            {loading ? "Memproses..." : "Masuk"}
           </button>
         </form>
 

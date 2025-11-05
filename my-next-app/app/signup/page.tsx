@@ -1,20 +1,56 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export default function SignupPage() {
-  const [username, setUsername] = useState("");
+export default function RegisterPage() {
+  const router = useRouter();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
+  const [role, setRole] = useState("user"); // default role
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password !== confirm) {
-      alert("Password dan konfirmasi tidak sama!");
+    setError(null);
+    setSuccessMsg(null);
+
+    if (!name || !email || !password) {
+      setError("Nama, email, dan password wajib diisi.");
       return;
     }
-    alert(`Akun berhasil dibuat untuk: ${username}`);
+
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password, role }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data?.error || "Gagal mendaftar.");
+        setLoading(false);
+        return;
+      }
+
+      setSuccessMsg("Registrasi berhasil! Silakan login.");
+      // Optional: redirect to login after short delay
+      setTimeout(() => {
+        router.push("/login");
+      }, 1000);
+    } catch (err) {
+      console.error(err);
+      setError("Terjadi kesalahan jaringan. Coba lagi.");
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,7 +72,7 @@ export default function SignupPage() {
           borderRadius: "16px",
           padding: "40px",
           width: "100%",
-          maxWidth: "420px",
+          maxWidth: "480px",
           boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
           textAlign: "center",
         }}
@@ -49,36 +85,17 @@ export default function SignupPage() {
             marginBottom: "20px",
           }}
         >
-          Daftar Akun Timnas
+          Daftar Akun Baru
         </h2>
 
-        <button
-          style={{
-            width: "100%",
-            border: "1px solid #ccc",
-            borderRadius: "8px",
-            padding: "10px",
-            fontWeight: "500",
-            cursor: "pointer",
-            marginBottom: "20px",
-            backgroundColor: "#fff",
-          }}
-        >
-          G Daftar dengan Google
-        </button>
-
-        <hr style={{ margin: "20px 0" }} />
-
-        <form onSubmit={handleSignup}>
+        <form onSubmit={handleRegister}>
           <div style={{ textAlign: "left", marginBottom: "10px" }}>
-            <label style={{ fontWeight: "600", fontSize: "14px" }}>
-              Username
-            </label>
+            <label style={{ fontWeight: "600", fontSize: "14px" }}>Nama</label>
             <input
               type="text"
-              placeholder="Masukkan Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Nama lengkap"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               style={{
                 width: "100%",
                 padding: "10px",
@@ -86,7 +103,7 @@ export default function SignupPage() {
                 border: "1px solid #ccc",
                 marginTop: "6px",
               }}
-              required
+              disabled={loading}
             />
           </div>
 
@@ -94,7 +111,7 @@ export default function SignupPage() {
             <label style={{ fontWeight: "600", fontSize: "14px" }}>Email</label>
             <input
               type="email"
-              placeholder="Masukkan Email"
+              placeholder="email@contoh.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               style={{
@@ -104,7 +121,7 @@ export default function SignupPage() {
                 border: "1px solid #ccc",
                 marginTop: "6px",
               }}
-              required
+              disabled={loading}
             />
           </div>
 
@@ -114,7 +131,7 @@ export default function SignupPage() {
             </label>
             <input
               type="password"
-              placeholder="Masukkan Password"
+              placeholder="Buat password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               style={{
@@ -124,29 +141,37 @@ export default function SignupPage() {
                 border: "1px solid #ccc",
                 marginTop: "6px",
               }}
-              required
+              disabled={loading}
             />
           </div>
 
-          <div style={{ textAlign: "left", marginBottom: "20px" }}>
-            <label style={{ fontWeight: "600", fontSize: "14px" }}>
-              Konfirmasi Password
-            </label>
-            <input
-              type="password"
-              placeholder="Ulangi Password"
-              value={confirm}
-              onChange={(e) => setConfirm(e.target.value)}
+          <div style={{ textAlign: "left", marginBottom: "18px" }}>
+            <label style={{ fontWeight: "600", fontSize: "14px" }}>Role</label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
               style={{
                 width: "100%",
                 padding: "10px",
                 borderRadius: "8px",
                 border: "1px solid #ccc",
                 marginTop: "6px",
+                background: "#fff",
               }}
-              required
-            />
+              disabled={loading}
+            >
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+              {/* NOTE: biasanya pembuatan admin harus dibatasi; ini hanya demo */}
+            </select>
           </div>
+
+          {error && (
+            <p style={{ color: "crimson", marginBottom: "10px" }}>{error}</p>
+          )}
+          {successMsg && (
+            <p style={{ color: "green", marginBottom: "10px" }}>{successMsg}</p>
+          )}
 
           <button
             type="submit"
@@ -158,11 +183,13 @@ export default function SignupPage() {
               border: "none",
               borderRadius: "8px",
               fontWeight: "600",
-              cursor: "pointer",
+              cursor: loading ? "not-allowed" : "pointer",
               marginBottom: "10px",
+              opacity: loading ? 0.7 : 1,
             }}
+            disabled={loading}
           >
-            Daftar
+            {loading ? "Mendaftar..." : "Daftar"}
           </button>
         </form>
 
