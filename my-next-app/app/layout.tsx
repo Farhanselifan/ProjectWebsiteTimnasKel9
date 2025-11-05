@@ -6,16 +6,18 @@ export const metadata = {
   description: "Website Tim Nasional Sepak Bola Indonesia",
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="id">
       <body>
         <nav className="navbar">
-          <div className="navbar-logo">Timnas Indonesia</div>
+          <div className="navbar-logo" >Timnas Indonesia</div>
           <ul className="navbar-menu">
-            <li><a href="#berita">Berita</a></li>
-            <li><a href="#pemain">Pemain</a></li>
-            <li><a href="#jadwal">Jadwal</a></li>
+            <li><a href="/">Home</a></li>
             <li><a href="/login">Login</a></li>
             <li>
                 <a href="/store" className="btn-secondary">
