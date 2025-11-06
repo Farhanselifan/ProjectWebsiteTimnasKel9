@@ -11,7 +11,7 @@ export default function Home() {
           <p>Tim Nasional Sepak Bola Indonesia</p>
           <div className="hero-buttons">
             <a href="#jadwal"><button className="btn-primary">Lihat Jadwal</button></a>
-            <a href="#store"><button className="btn-secondary">Kunjungi Store</button></a>
+            <a href="/store"><button className="btn-secondary">Kunjungi Store</button></a>
           </div>
         </div>
       </section>
