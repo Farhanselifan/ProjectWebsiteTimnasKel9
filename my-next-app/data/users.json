@@ -5,5 +5,19 @@
     "email": "ifansmurf1@gmail.com",
     "passwordHash": "$2b$10$sXKoN7/0XDzCokx8UogxPuHvrseJd8xHwmOhz9f9ifWFwbpDmPsiK",
     "role": "user"
+  },
+  {
+    "id": "85f5de15-ec62-4ae0-9450-215184476bf9",
+    "name": "abcd",
+    "email": "aaa@aaa",
+    "passwordHash": "$2b$10$N/xfgy0sFw2sxLWie6ZEJutV7es.X3ZiMeWkwyYMQ38hJJ4o.5Mxq",
+    "role": "user"
+  },
+  {
+    "id": "843335c1-c9ad-467c-96ab-bfcc47e78d9f",
+    "name": "abbb",
+    "email": "bbbaaa@aaa",
+    "passwordHash": "$2b$10$2DdNfazjrwF2eHb0.yi7vu.hRq4gwrINA.6ZzFXIhI1H61xkRNuDG",
+    "role": "admin"
   }
 ]

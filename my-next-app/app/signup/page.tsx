@@ -8,7 +8,7 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("user"); // default role
+  const [role, setRole] = useState("user");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
@@ -39,11 +39,10 @@ export default function RegisterPage() {
         return;
       }
 
-      setSuccessMsg("Registrasi berhasil! Silakan login.");
-      // Optional: redirect to login after short delay
+      setSuccessMsg("Registrasi berhasil! Mengalihkan ke halaman login...");
       setTimeout(() => {
         router.push("/login");
-      }, 1000);
+      }, 900);
     } catch (err) {
       console.error(err);
       setError("Terjadi kesalahan jaringan. Coba lagi.");
@@ -54,79 +53,154 @@ export default function RegisterPage() {
   };
 
   return (
-    <div
-      style={{
-        backgroundImage: "url('/images/stadium-bg.jpg')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "20px",
-      }}
-    >
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "row" }}>
+      {/* LEFT PANEL */}
       <div
         style={{
-          backgroundColor: "white",
-          borderRadius: "16px",
-          padding: "40px",
-          width: "100%",
-          maxWidth: "480px",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-          textAlign: "center",
+          width: "48%",
+          minHeight: "100vh",
+          backgroundColor: "#b80000",
+          color: "#fff",
+          padding: "64px 48px",
+          boxSizing: "border-box",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         }}
       >
-        <h2
+        <div style={{ alignSelf: "flex-start", maxWidth: 460 }}>
+          <h1 style={{ margin: 0, fontSize: 40, fontWeight: 800 }}>
+            Timnas Indonesia
+          </h1>
+          <p style={{ marginTop: 12, opacity: 0.95 }}>
+            Merah Putih di Hati, Garuda di Dada
+          </p>
+        </div>
+
+        <div
           style={{
-            fontSize: "22px",
-            fontWeight: "700",
-            color: "#c00",
-            marginBottom: "20px",
+            flex: 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
           }}
         >
-          Daftar Akun Baru
-        </h2>
+          <img
+            src="/images/garuda.png"
+            alt="Garuda"
+            style={{
+              width: 360,
+              height: "auto",
+              objectFit: "contain",
+              borderRadius: 6,
+              boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+              background: "#fff0",
+            }}
+          />
+        </div>
 
-        <form onSubmit={handleRegister}>
-          <div style={{ textAlign: "left", marginBottom: "10px" }}>
-            <label style={{ fontWeight: "600", fontSize: "14px" }}>Nama</label>
+        <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+          <button
+            onClick={() => router.push("/")}
+            style={{
+              background: "#fff",
+              color: "#b80000",
+              padding: "10px 18px",
+              borderRadius: 10,
+              border: "none",
+              fontWeight: 700,
+              boxShadow: "0 6px 18px rgba(0,0,0,0.12)",
+              cursor: "pointer",
+            }}
+          >
+            Kembali ke Beranda
+          </button>
+        </div>
+      </div>
+
+      {/* RIGHT PANEL */}
+      <div
+        style={{
+          width: "52%",
+          minHeight: "100vh",
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "48px",
+          boxSizing: "border-box",
+          backgroundImage: "url('/images/stadium-bg.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.86), rgba(255,255,255,0.92))",
+            pointerEvents: "none",
+          }}
+        />
+
+        <div
+          style={{
+            width: 480,
+            position: "relative",
+            zIndex: 2,
+            background: "#fff",
+            borderRadius: 16,
+            padding: "28px 32px",
+            boxShadow: "0 20px 40px rgba(0,0,0,0.12)",
+            textAlign: "center",
+          }}
+        >
+          <h2 style={{ color: "#b80000", marginTop: 0, marginBottom: 18 }}>
+            Daftar Akun Baru
+          </h2>
+
+          <form onSubmit={handleRegister} style={{ textAlign: "left" }}>
+            <label style={{ display: "block", fontWeight: 700, fontSize: 13, marginBottom: 6 }}>
+              Nama
+            </label>
             <input
               type="text"
               placeholder="Nama lengkap"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              disabled={loading}
               style={{
                 width: "100%",
-                padding: "10px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                marginTop: "6px",
+                padding: "10px 12px",
+                borderRadius: 8,
+                border: "1px solid #ddd",
+                marginBottom: 12,
+                boxSizing: "border-box",
               }}
-              disabled={loading}
             />
-          </div>
 
-          <div style={{ textAlign: "left", marginBottom: "10px" }}>
-            <label style={{ fontWeight: "600", fontSize: "14px" }}>Email</label>
+            <label style={{ display: "block", fontWeight: 700, fontSize: 13, marginBottom: 6 }}>
+              Email
+            </label>
             <input
               type="email"
               placeholder="email@contoh.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
               style={{
                 width: "100%",
-                padding: "10px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                marginTop: "6px",
+                padding: "10px 12px",
+                borderRadius: 8,
+                border: "1px solid #ddd",
+                marginBottom: 12,
+                boxSizing: "border-box",
               }}
-              disabled={loading}
             />
-          </div>
 
-          <div style={{ textAlign: "left", marginBottom: "10px" }}>
-            <label style={{ fontWeight: "600", fontSize: "14px" }}>
+            <label style={{ display: "block", fontWeight: 700, fontSize: 13, marginBottom: 6 }}>
               Password
             </label>
             <input
@@ -134,78 +208,67 @@ export default function RegisterPage() {
               placeholder="Buat password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
               style={{
                 width: "100%",
-                padding: "10px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                marginTop: "6px",
+                padding: "10px 12px",
+                borderRadius: 8,
+                border: "1px solid #ddd",
+                marginBottom: 12,
+                boxSizing: "border-box",
               }}
-              disabled={loading}
             />
-          </div>
 
-          <div style={{ textAlign: "left", marginBottom: "18px" }}>
-            <label style={{ fontWeight: "600", fontSize: "14px" }}>Role</label>
+            <label style={{ display: "block", fontWeight: 700, fontSize: 13, marginBottom: 6 }}>
+              Role
+            </label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
+              disabled={loading}
               style={{
                 width: "100%",
-                padding: "10px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                marginTop: "6px",
+                padding: "10px 12px",
+                borderRadius: 8,
+                border: "1px solid #ddd",
+                marginBottom: 16,
+                boxSizing: "border-box",
                 background: "#fff",
               }}
-              disabled={loading}
             >
               <option value="user">User</option>
               <option value="admin">Admin</option>
-              {/* NOTE: biasanya pembuatan admin harus dibatasi; ini hanya demo */}
             </select>
-          </div>
 
-          {error && (
-            <p style={{ color: "crimson", marginBottom: "10px" }}>{error}</p>
-          )}
-          {successMsg && (
-            <p style={{ color: "green", marginBottom: "10px" }}>{successMsg}</p>
-          )}
+            {error && <p style={{ color: "crimson", marginBottom: 10 }}>{error}</p>}
+            {successMsg && <p style={{ color: "green", marginBottom: 10 }}>{successMsg}</p>}
 
-          <button
-            type="submit"
-            style={{
-              width: "100%",
-              backgroundColor: "#c00",
-              color: "#fff",
-              padding: "10px",
-              border: "none",
-              borderRadius: "8px",
-              fontWeight: "600",
-              cursor: loading ? "not-allowed" : "pointer",
-              marginBottom: "10px",
-              opacity: loading ? 0.7 : 1,
-            }}
-            disabled={loading}
-          >
-            {loading ? "Mendaftar..." : "Daftar"}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                width: "100%",
+                backgroundColor: "#b80000",
+                color: "#fff",
+                padding: "11px",
+                border: "none",
+                borderRadius: 8,
+                fontWeight: 700,
+                cursor: loading ? "not-allowed" : "pointer",
+                marginBottom: 12,
+              }}
+            >
+              {loading ? "Mendaftar..." : "Daftar"}
+            </button>
+          </form>
 
-        <p style={{ fontSize: "14px" }}>
-          Sudah punya akun?{" "}
-          <a
-            href="/login"
-            style={{
-              color: "#c00",
-              fontWeight: "700",
-              textDecoration: "none",
-            }}
-          >
-            Masuk Sekarang
-          </a>
-        </p>
+          <p style={{ textAlign: "center", marginTop: 6, fontSize: 14 }}>
+            Sudah punya akun?{" "}
+            <a href="/login" style={{ color: "#b80000", fontWeight: 800, textDecoration: "none" }}>
+              Masuk Sekarang
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
