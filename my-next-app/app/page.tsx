@@ -22,7 +22,7 @@ export default function Home() {
   <div className="news-list">
     {/* Berita 1 */}
     <article className="news-card-horizontal">
-      <div className="news-image">
+-      <div className="news-image">
         <Image
           src="/images/news/indonesia.jpg"
           alt="Indonesia menang 4-0 atas Thailand"
@@ -213,7 +213,6 @@ export default function Home() {
             <h3>Rizky Ridho</h3>
             <p>Bek Tengah</p>
           </div>
-
           {/* Add more players the same way */}
         </div>
 </section>

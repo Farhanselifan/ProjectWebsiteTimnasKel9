@@ -19,5 +19,19 @@
     "email": "bbbaaa@aaa",
     "passwordHash": "$2b$10$2DdNfazjrwF2eHb0.yi7vu.hRq4gwrINA.6ZzFXIhI1H61xkRNuDG",
     "role": "admin"
+  },
+  {
+    "id": "0e5b2bd1-bee1-439a-9cc9-e67f1a026aae",
+    "name": "farhan",
+    "email": "farhanselifan@gmail.com",
+    "passwordHash": "$2b$10$6hh8fOSvJIucViok7rQHRu2ywi9WdnFdYORA/lL7aD30qwFu.Ce52",
+    "role": "user"
+  },
+  {
+    "id": "f22b3b4f-f509-44dc-ba10-ad6ea1a508a7",
+    "name": "yaya",
+    "email": "farhanamselifan@gmail.com",
+    "passwordHash": "$2b$10$67zaCxtpRpHPmx5lcANPDOw8HHD6f1HIbLvMr8Fy5IzNAQeehyrFq",
+    "role": "user"
   }
 ]

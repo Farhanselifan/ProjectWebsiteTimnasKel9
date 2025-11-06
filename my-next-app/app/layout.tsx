@@ -24,7 +24,6 @@ export default function RootLayout({
                   Store
                 </a>
             </li>
-      
           </ul>
         </nav>
         {children}
