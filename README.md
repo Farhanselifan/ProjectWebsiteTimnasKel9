@@ -1,12 +1,16 @@
 📝 Git Cheatsheet – Update ke Repo Kelompok
 --------------------------------------------------------------------------------------
-🔹 1. Clone Repo (sekali saja di awal)
+🔹 1. Clone Repo  lalu setting library (sekali saja di awal)
 
 Kalau belum punya repo di laptop:
 
-git clone https://github.com/Farhanselifan/WordPressProjectKel9.git
+git clone https://github.com/Farhanselifan/ProjectWebsiteTimnasKel9.git
+cd ProjectWebsiteTimnasKel9
+cd my-next-app
+npm install
+npm install bcryptjs jsonwebtoken
+npm install tailwindcss
 
-cd WordPressProjectKel9
 --------------------------------------------------------------------------------------
 🔹 2. Cek Status Repo
 
@@ -63,3 +67,5 @@ Setelah selesai, merge lewat GitHub Pull Request.
 
 📌 Dengan cheatsheet ini kamu tinggal ikuti alur:
 pull → edit → add → commit → push
+
+
