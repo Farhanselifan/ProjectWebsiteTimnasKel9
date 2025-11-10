@@ -33,5 +33,12 @@
     "email": "farhanamselifan@gmail.com",
     "passwordHash": "$2b$10$67zaCxtpRpHPmx5lcANPDOw8HHD6f1HIbLvMr8Fy5IzNAQeehyrFq",
     "role": "user"
+  },
+  {
+    "id": "f34cb3e8-5da0-48e4-b153-dc282416a941",
+    "name": "abbb",
+    "email": "yaa@aaa",
+    "passwordHash": "$2b$10$DLc.P313HNK7xblnxipxS.BalVkkvjHOwOSMoxZ3be.4VhRppYzb2",
+    "role": "user"
   }
 ]
