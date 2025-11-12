@@ -1,5 +1,9 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter, useParams } from "next/navigation";
 
 type Player = {
   id: string;
@@ -21,101 +25,185 @@ type Player = {
   };
 };
 
-type Props = {
-  params: { id: string };
-};
+// SMALL IMAGE WRAPPER: uses next/image but falls back to <img> when there is an error
+function ImageWrapper({ src, alt }: { src: string; alt: string }) {
+  const [fail, setFail] = React.useState(false);
+  const finalSrc = src || "/images/players/default.png";
 
-const players: Player[] = [
+  if (fail) {
+    return (
+      // final fallback
+      <img
+        src={finalSrc}
+        alt={alt}
+        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = "/images/players/default.png";
+        }}
+      />
+    );
+  }
+
+  return (
+    <Image
+      src={finalSrc}
+      alt={alt}
+      fill
+      style={{ objectFit: "cover" }}
+      sizes="(max-width: 1024px) 100vw, 360px"
+      onError={() => setFail(true)}
+      unoptimized
+    />
+  );
+}
+
+// static data (you can move to data/players.json later)
+const PLAYERS: Player[] = [
   {
     id: "asnawi",
-    name: "asnawi",
+    name: "Asnawi",
     number: 10,
     position: "Penyerang",
     club: "Persija",
     age: 24,
     height: "178 cm",
     weight: "72 kg",
-    photo: "../images/players/asnawi.jpg",
-    bio: "Asnawi adalah penyerang cepat dengan dribel bagus dan insting mencetak gol. Lahir di Jakarta, dilatih sejak usia dini, dan tampil konsisten di kompetisi domestik.",
+    photo: "/images/players/asnawi.jpg",
+    bio:
+      "Asnawi: penyerang lincah dengan dribel mematikan dan insting mencetak gol. Cepat di ruang sempit dan sering jadi penentu pertandingan.",
     stats: { appearances: 28, goals: 12, assists: 6, yellowCards: 3, redCards: 0 },
   },
   {
-    id: "Calvin",
-    name: "Calvin Verdonk",
+    id: "marc-klok",
+    name: "Marc Klok",
     number: 4,
-    position: "Bek Tengah",
+    position: "Gelandang",
     club: "Arema",
-    age: 27,
-    height: "185 cm",
-    weight: "78 kg",
-    photo: "../images/players/Calvin VerdonkS.jpg",
-    bio: "Calvin Verdonk adalah bek tangguh yang kuat secara fisik dan membaca permainan dengan baik. Pemain andalan tim pertahanan.",
-    stats: { appearances: 30, goals: 2, assists: 1, yellowCards: 5, redCards: 0 },
+    age: 30,
+    height: "180 cm",
+    weight: "75 kg",
+    photo: "/images/players/marc-klok.jpg",
+    bio:
+      "Marc Klok: gelandang dengan visi permainan yang baik, kreator serangan dari lini tengah.",
+    stats: { appearances: 30, goals: 5, assists: 10, yellowCards: 4, redCards: 0 },
+  },
+  {
+    id: "rizky-ridho",
+    name: "Rizky Ridho",
+    number: 4,
+    position: "Gelandang",
+    club: "Timnas Indonesia",
+    age: 30,
+    height: "180 cm",
+    weight: "75 kg",
+    photo: "/images/players/rizky-ridho.jpg",
+    bio:
+      "Rizky Ridho : gelandang dengan visi permainan yang baik, kreator serangan dari lini tengah.",
+    stats: { appearances: 30, goals: 5, assists: 10, yellowCards: 4, redCards: 0 },
   },
 ];
 
-export default function PlayerDetailPage({ params }: Props) {
-  const id = params?.id;
-  const player = players.find((p) => String(p.id) === String(id));
+export default function PlayerDetailPage() {
+  const router = useRouter();
+  const params = useParams(); // <--- gunakan hook ini untuk client component
+  const id = (params as any)?.id ?? null;
+
+  const [player, setPlayer] = useState<Player | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [followed, setFollowed] = useState(false);
+  const [messageOpen, setMessageOpen] = useState(false);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    // ambil player dari array statis
+    if (!id) {
+      setPlayer(null);
+      setLoading(false);
+      return;
+    }
+    const p = PLAYERS.find((x) => String(x.id) === String(id)) ?? null;
+    setPlayer(p);
+    setLoading(false);
+  }, [id]);
+
+  if (loading) {
+    return (
+      <main style={{ padding: 32, fontFamily: "Inter, Arial, sans-serif" }}>
+        <p>Memuat...</p>
+      </main>
+    );
+  }
 
   if (!player) {
     return (
-      <main style={{ padding: 48, fontFamily: "Arial, sans-serif" }}>
+      <main style={{ padding: 32, fontFamily: "Inter, Arial, sans-serif" }}>
         <section
           style={{
             textAlign: "center",
-            padding: "60px 20px",
-            background: "linear-gradient(135deg, #e60000, #ff9900)",
+            padding: "40px 20px",
+            background: "linear-gradient(135deg,#e60000,#ff9900)",
             color: "white",
             borderRadius: 8,
           }}
         >
-          <h1 style={{ fontSize: 28, marginBottom: 8 }}>Pemain Tidak Ditemukan</h1>
-          <p style={{ marginBottom: 12 }}>ID: {id}</p>
-          <Link
-            href="/players"
-            style={{
-              display: "inline-block",
-              marginTop: "10px",
-              background: "white",
-              color: "#e60000",
-              padding: "8px 14px",
-              borderRadius: "8px",
-              textDecoration: "none",
-              fontWeight: "bold",
-            }}
-          >
-            Kembali ke Daftar Pemain
-          </Link>
+          <h1 style={{ margin: 0, fontSize: 22 }}>Pemain Tidak Ditemukan</h1>
+          <p style={{ marginTop: 8 }}>ID: {id ?? "—"}</p>
+          <div style={{ marginTop: 12 }}>
+            <Link
+              href="/players"
+              style={{
+                background: "#fff",
+                color: "#e60000",
+                padding: "8px 14px",
+                borderRadius: 8,
+                textDecoration: "none",
+                fontWeight: 700,
+              }}
+            >
+              Kembali ke Daftar Pemain
+            </Link>
+          </div>
         </section>
       </main>
     );
   }
 
+  const onFollow = () => setFollowed((v) => !v);
+
+  const onSendMessage = () => {
+    if (!message.trim()) {
+      alert("Tulis pesan terlebih dahulu.");
+      return;
+    }
+    alert(`Pesan terkirim ke ${player.name}:\n\n"${message}"`);
+    setMessage("");
+    setMessageOpen(false);
+  };
+
   return (
-    <main className="player-page" style={{ fontFamily: "Arial, sans-serif" }}>
+    <main style={{ fontFamily: "Inter, Arial, sans-serif", paddingBottom: 48 }}>
       {/* Hero */}
       <section
-        className="player-hero"
         style={{
-          textAlign: "center",
-          height: "200px",
-          padding: "40px 20px",
-          background: "linear-gradient(135deg, #e60000, #ff9900)",
+          background: "linear-gradient(135deg,#e60000,#ff9900)",
           color: "white",
+          padding: "36px 20px",
+          textAlign: "center",
         }}
       >
-        <h1 style={{ fontSize: 30, marginBottom: 8 }}>{player.name}</h1>
-        <p style={{ fontSize: 14 }}>
-          #{player.number} • {player.position} • {player.club}
-        </p>
+        <div style={{ maxWidth: 960, margin: "0 auto" }}>
+          <h1 style={{ margin: 0, fontSize: 28, letterSpacing: "0.4px" }}>{player.name}</h1>
+          <p style={{ marginTop: 6, opacity: 0.95 }}>
+            #{player.number} • {player.position} • {player.club}
+          </p>
+        </div>
       </section>
 
-      {/* Detail area (mirip concept store detail) */}
-      <section style={{ padding: "40px 20px" }}>
+      {/* Content */}
+      <section style={{ padding: "28px 20px" }}>
         <div
           style={{
-            maxWidth: 980,
+            maxWidth: 1100,
             margin: "0 auto",
             display: "grid",
             gridTemplateColumns: "360px 1fr",
@@ -123,66 +211,83 @@ export default function PlayerDetailPage({ params }: Props) {
             alignItems: "start",
           }}
         >
-          {/* Left - photo card */}
+          {/* Photo */}
           <div
             style={{
               borderRadius: 12,
               overflow: "hidden",
-              boxShadow: "0 8px 30px rgba(0,0,0,0.12)",
+              boxShadow: "0 12px 40px rgba(0,0,0,0.12)",
               background: "#fff",
-              textAlign: "center",
             }}
           >
             <div style={{ position: "relative", width: "100%", height: 360 }}>
-              <Image
-                src={player.photo ?? "/images/players/default.png"}
-                alt={player.name}
-                fill
-                style={{ objectFit: "cover" }}
-                sizes="(max-width: 1024px) 100vw, 360px"
-              />
+              <ImageWrapper src={player.photo ?? "/images/players/default.png"} alt={player.name} />
             </div>
 
-            <div style={{ padding: "18px" }}>
-              <h2 style={{ margin: "6px 0", fontSize: 20 }}>{player.name}</h2>
-              <p style={{ margin: "6px 0", color: "#666" }}>
+            <div style={{ padding: 16 }}>
+              <h2 style={{ margin: "6px 0", fontSize: 18 }}>{player.name}</h2>
+              <p style={{ margin: "6px 0", color: "#555" }}>
                 #{player.number} • {player.position}
               </p>
 
-              <div style={{ marginTop: 12 }}>
+              <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
                 <button
+                  onClick={() => {
+                    onFollow();
+                    if (!followed) alert(`Kamu sekarang mengikuti ${player.name}`);
+                    else alert(`Kamu berhenti mengikuti ${player.name}`);
+                  }}
                   style={{
-                    width: "100%",
-                    background: "#e60000",
-                    color: "#fff",
-                    padding: "10px 14px",
-                    border: "none",
+                    flex: 1,
+                    padding: "10px 12px",
                     borderRadius: 8,
+                    border: "none",
+                    background: followed ? "#ddd" : "#e60000",
+                    color: followed ? "#333" : "#fff",
                     fontWeight: 700,
                     cursor: "pointer",
                   }}
-                  onClick={() => alert("Fitur follow belum diimplementasikan.")}
                 >
-                  Ikuti Pemain
+                  {followed ? "Diikuti" : "Ikuti Pemain"}
+                </button>
+
+                <button
+                  onClick={() => setMessageOpen((s) => !s)}
+                  style={{
+                    padding: "10px 12px",
+                    borderRadius: 8,
+                    border: "1px solid #ddd",
+                    background: "#fff",
+                    color: "#333",
+                    cursor: "pointer",
+                  }}
+                >
+                  {messageOpen ? "Tutup" : "Kirim Pesan"}
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Right - details */}
+          {/* Details */}
           <div
             style={{
               background: "#fff",
               borderRadius: 12,
               padding: 20,
-              boxShadow: "0 8px 30px rgba(0,0,0,0.06)",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
             }}
           >
-            <h3 style={{ color: "#e60000", marginTop: 0, marginBottom: 12 }}>
-              Deskripsi Pemain
-            </h3>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
+              <h3 style={{ color: "#e60000", margin: 0 }}>Profil & Statistik</h3>
+              <div style={{ textAlign: "right" }}>
+                <Link href="/players" style={{ color: "#0066cc", textDecoration: "none", fontSize: 14 }}>
+                  ← Kembali ke Daftar Pemain
+                </Link>
+                <div style={{ fontSize: 12, color: "#888", marginTop: 6 }}>ID: {player.id}</div>
+              </div>
+            </div>
 
-            <div style={{ display: "flex", gap: 24 }}>
+            <div style={{ display: "flex", gap: 20, marginTop: 18 }}>
               <div style={{ flex: 1 }}>
                 <p style={{ margin: "8px 0", fontWeight: 700 }}>Nama</p>
                 <p style={{ margin: "6px 0 12px" }}>{player.name}</p>
@@ -196,7 +301,7 @@ export default function PlayerDetailPage({ params }: Props) {
                 </p>
               </div>
 
-              <div style={{ width: 200 }}>
+              <div style={{ width: 220 }}>
                 <p style={{ margin: "8px 0", fontWeight: 700 }}>Statistik</p>
                 <ul style={{ listStyle: "none", padding: 0, marginTop: 8 }}>
                   <li style={{ marginBottom: 8 }}>
@@ -223,35 +328,56 @@ export default function PlayerDetailPage({ params }: Props) {
               <p style={{ marginTop: 8, lineHeight: 1.6 }}>{player.bio}</p>
             </div>
 
-            <div style={{ marginTop: 18, display: "flex", gap: 12 }}>
-              <Link
-                href="/players"
-                style={{
-                  padding: "10px 14px",
-                  borderRadius: 8,
-                  border: "1px solid #ddd",
-                  textDecoration: "none",
-                  color: "#333",
-                }}
-              >
-                ← Kembali ke Daftar Pemain
-              </Link>
-
-              <button
-                onClick={() => alert("Fitur kirim pesan ke pemain belum diimplementasikan.")}
-                style={{
-                  padding: "10px 14px",
-                  borderRadius: 8,
-                  border: "none",
-                  background: "#e60000",
-                  color: "#fff",
-                  fontWeight: 700,
-                  cursor: "pointer",
-                }}
-              >
-                Kirim Pesan / Follow
-              </button>
-            </div>
+            {messageOpen && (
+              <div style={{ marginTop: 16 }}>
+                <textarea
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder={`Tulis pesan untuk ${player.name}...`}
+                  style={{
+                    width: "100%",
+                    minHeight: 100,
+                    padding: 12,
+                    borderRadius: 8,
+                    border: "1px solid #ddd",
+                    boxSizing: "border-box",
+                    resize: "vertical",
+                  }}
+                />
+                <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
+                  <button
+                    onClick={onSendMessage}
+                    style={{
+                      padding: "10px 14px",
+                      borderRadius: 8,
+                      border: "none",
+                      background: "#e60000",
+                      color: "#fff",
+                      fontWeight: 700,
+                      cursor: "pointer",
+                    }}
+                  >
+                    Kirim Pesan
+                  </button>
+                  <button
+                    onClick={() => {
+                      setMessage("");
+                      setMessageOpen(false);
+                    }}
+                    style={{
+                      padding: "10px 14px",
+                      borderRadius: 8,
+                      border: "1px solid #ddd",
+                      background: "#fff",
+                      color: "#333",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Batal
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>

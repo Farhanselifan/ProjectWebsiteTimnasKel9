@@ -177,41 +177,47 @@ export default function Home() {
         <div className="player-grid">
           {/* Player 1 */}
           <div className="player-card">
-            <img
-              src="/images/players/asnawi.jpg"
-              alt="Asnawi Mangkualam"
-              className="player-img"
-              width={300}      // any number, will be scaled
-              height={300}
-            />
-            <h3>Asnawi Mangkualam</h3>
-            <p>Bek Kanan</p>
+            <a href="/player/asnawi">
+              <img
+                src="/images/players/asnawi.jpg"
+                alt="Asnawi Mangkualam"
+                className="player-img"
+                width={300}      // any number, will be scaled
+                height={300}
+              />
+              <h3>Asnawi Mangkualam</h3>
+              <p>Bek Kanan</p>
+            </a>
           </div>
 
           {/* Player 2 */}
           <div className="player-card">
-            <img
-              src="/images/players/marc-klok.jpg"
-              alt="Marc Klok"
-              className="player-img"
-              width={300}      // any number, will be scaled
-              height={300}
-            />
-            <h3>Marc Klok</h3>
-            <p>Gelandang</p>
+            <a href="/player/marc-klok">
+              <img
+                src="/images/players/marc-klok.jpg"
+                alt="Marc Klok"
+                className="player-img"
+                width={300}      // any number, will be scaled
+                height={300}
+              />
+              <h3>Marc Klok</h3>
+              <p>Gelandang</p>
+            </a>
           </div>
 
           {/* Player 3 */}
           <div className="player-card">
-            <img
-              src="/images/players/rizky-ridho.jpg"
-              alt="Rizky Ridho"
-              className="player-img"
-              width={300}      // any number, will be scaled
-              height={300}
-            />
-            <h3>Rizky Ridho</h3>
-            <p>Bek Tengah</p>
+            <a href="/player/rizky-ridho">
+              <img
+                src="/images/players/rizky-ridho.jpg"
+                alt="Rizky Ridho"
+                className="player-img"
+                width={300}      // any number, will be scaled
+                height={300}
+              />
+              <h3>Rizky Ridho</h3>
+              <p>Bek Tengah</p>
+            </a>
           </div>
           {/* Add more players the same way */}
         </div>
