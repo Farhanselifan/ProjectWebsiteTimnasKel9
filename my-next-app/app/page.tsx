@@ -175,50 +175,52 @@ export default function Home() {
       <section id="pemain" className="content-page">
         <h1>Daftar Pemain Timnas Indonesia</h1>
         <div className="player-grid">
+
           {/* Player 1 */}
-          <div className="player-card">
-            <a href="/player/asnawi">
-              <img
-                src="/images/players/asnawi.jpg"
-                alt="Asnawi Mangkualam"
-                className="player-img"
-                width={300}      // any number, will be scaled
-                height={300}
-              />
-              <h3>Asnawi Mangkualam</h3>
-              <p>Bek Kanan</p>
-            </a>
-          </div>
+          <a href="/player/asnawi">
+            <div className="player-card">
+                <img
+                  src="/images/players/asnawi.jpg"
+                  alt="Asnawi Mangkualam"
+                  className="player-img"
+                  width={300}      // any number, will be scaled
+                  height={300}
+                />
+                <h3>Asnawi Mangkualam</h3>
+                <p>Bek Kanan</p>
+            </div>
+          </a>
 
           {/* Player 2 */}
-          <div className="player-card">
-            <a href="/player/marc-klok">
-              <img
-                src="/images/players/marc-klok.jpg"
-                alt="Marc Klok"
-                className="player-img"
-                width={300}      // any number, will be scaled
-                height={300}
-              />
-              <h3>Marc Klok</h3>
-              <p>Gelandang</p>
-            </a>
-          </div>
+          <a href="/player/marc-klok">
+            <div className="player-card">
+                <img
+                  src="/images/players/marc-klok.jpg"
+                  alt="Marc Klok"
+                  className="player-img"
+                  width={300}      // any number, will be scaled
+                  height={300}
+                />
+                <h3>Marc Klok</h3>
+                <p>Gelandang</p>          
+            </div>
+          </a>
 
-          {/* Player 3 */}
-          <div className="player-card">
-            <a href="/player/rizky-ridho">
-              <img
-                src="/images/players/rizky-ridho.jpg"
-                alt="Rizky Ridho"
-                className="player-img"
-                width={300}      // any number, will be scaled
-                height={300}
-              />
-              <h3>Rizky Ridho</h3>
-              <p>Bek Tengah</p>
-            </a>
-          </div>
+          {/* Player 3 */}  
+          <a href="/player/rizky-ridho">
+            <div className="player-card">
+                <img
+                  src="/images/players/rizky-ridho.jpg"
+                  alt="Rizky Ridho"
+                  className="player-img"
+                  width={300}      // any number, will be scaled
+                  height={300}
+                />
+                <h3>Rizky Ridho</h3>
+                <p>Bek Tengah</p>            
+            </div>
+          </a>
+
           {/* Add more players the same way */}
         </div>
 </section>

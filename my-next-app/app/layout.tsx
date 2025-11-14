@@ -18,12 +18,9 @@ export default function RootLayout({
           <div className="navbar-logo" >Timnas Indonesia</div>
           <ul className="navbar-menu">
             <li><a href="/">Home</a></li>
+            <li><a href="/player">Player</a></li>
+            <li><a href="/store" className="btn-secondary">Store</a></li> 
             <li><a href="/login">Login</a></li>
-            <li>
-                <a href="/store" className="btn-secondary">
-                  Store
-                </a>
-            </li>
           </ul>
         </nav>
         {children}

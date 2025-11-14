@@ -150,7 +150,7 @@ export default function PlayerDetailPage() {
           <p style={{ marginTop: 8 }}>ID: {id ?? "—"}</p>
           <div style={{ marginTop: 12 }}>
             <Link
-              href="/players"
+              href="/player"
               style={{
                 background: "#fff",
                 color: "#e60000",
@@ -231,39 +231,6 @@ export default function PlayerDetailPage() {
               </p>
 
               <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
-                <button
-                  onClick={() => {
-                    onFollow();
-                    if (!followed) alert(`Kamu sekarang mengikuti ${player.name}`);
-                    else alert(`Kamu berhenti mengikuti ${player.name}`);
-                  }}
-                  style={{
-                    flex: 1,
-                    padding: "10px 12px",
-                    borderRadius: 8,
-                    border: "none",
-                    background: followed ? "#ddd" : "#e60000",
-                    color: followed ? "#333" : "#fff",
-                    fontWeight: 700,
-                    cursor: "pointer",
-                  }}
-                >
-                  {followed ? "Diikuti" : "Ikuti Pemain"}
-                </button>
-
-                <button
-                  onClick={() => setMessageOpen((s) => !s)}
-                  style={{
-                    padding: "10px 12px",
-                    borderRadius: 8,
-                    border: "1px solid #ddd",
-                    background: "#fff",
-                    color: "#333",
-                    cursor: "pointer",
-                  }}
-                >
-                  {messageOpen ? "Tutup" : "Kirim Pesan"}
-                </button>
               </div>
             </div>
           </div>
@@ -280,7 +247,7 @@ export default function PlayerDetailPage() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 }}>
               <h3 style={{ color: "#e60000", margin: 0 }}>Profil & Statistik</h3>
               <div style={{ textAlign: "right" }}>
-                <Link href="/players" style={{ color: "#0066cc", textDecoration: "none", fontSize: 14 }}>
+                <Link href="/player" style={{ color: "#0066cc", textDecoration: "none", fontSize: 14 }}>
                   ← Kembali ke Daftar Pemain
                 </Link>
                 <div style={{ fontSize: 12, color: "#888", marginTop: 6 }}>ID: {player.id}</div>

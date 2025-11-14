@@ -40,5 +40,12 @@
     "email": "yaa@aaa",
     "passwordHash": "$2b$10$DLc.P313HNK7xblnxipxS.BalVkkvjHOwOSMoxZ3be.4VhRppYzb2",
     "role": "user"
+  },
+  {
+    "id": "b99edb80-8e03-4ce8-8e30-a5a08aab30de",
+    "name": "Rizki",
+    "email": "Yeee@aaa",
+    "passwordHash": "$2b$10$XyqaJ3rZ0N7Ou1aYq5.AmOjVnpMM1XqLEyQ7KeTmTy9i6Uubi7b1y",
+    "role": "user"
   }
 ]
