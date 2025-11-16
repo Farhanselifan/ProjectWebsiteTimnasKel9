@@ -1,9 +1,84 @@
+"use client";
 import Image from "next/image";
-import React from "react"
+import React from "react";
+import { useEffect, useState } from "react";
+
+
+
+type User = {
+  id: number;
+  name: string;
+  email: string;
+};
 
 export default function Home() {
+  const [users, setUsers] = useState<User[]>([]);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+
+  // Ambil data user dari backend Express
+  const fetchUsers = async () => {
+    const res = await fetch("http://localhost:5000/users");
+    const data = await res.json();
+    setUsers(data);
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await fetch("http://localhost:5000/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, email }),
+    });
+    setName("");
+    setEmail("");
+    fetchUsers(); // refresh data
+  };
   return (
     <main>
+      <h1>Users from Express + MySQL</h1>
+
+      <form onSubmit={handleSubmit} style={{ marginBottom: 20 }}>
+        <div>
+          <input
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div>
+          <input
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <button type="submit">Add User</button>
+      </form>
+
+      <ul>
+        {users.map((u) => (
+          <li key={u.id}>
+            {u.id} - {u.name} ({u.email})
+          </li>
+        ))}
+      </ul>
+
+
+
+
+
+
+
+
+
+
       {/* Hero Section */}
       <section id="home" className="hero">
         <div className="hero-content">
