@@ -81,6 +81,33 @@ app.delete("/users/:id", (req, res) => {
   });
 });
 
+// REAL CODE 
+
+// GET NEWS 
+app.get("/news", (req, res) => {
+  const sql = "SELECT * FROM news ORDER BY date DESC";
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ error: err });
+    res.json(results);
+  });
+});
+
+// GET JADWAL
+app.get("/matches", (req, res) => {
+  const sql = "SELECT * FROM matches ORDER BY match_date, match_time";
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ error: err });
+    res.json(results);
+  });
+});
+
+
+
+// GET PEMAIN
+
+
+
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

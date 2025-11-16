@@ -5,79 +5,101 @@ import { useEffect, useState } from "react";
 
 
 
-type User = {
+type News = {
   id: number;
-  name: string;
-  email: string;
+  title: string;
+  description: string;
+  date: string; // dari backend format "YYYY-MM-DD"
+};
+
+type Match = {
+  id: number;
+  home_team: string;
+  away_team: string;
+  match_date: string; // "2025-11-12"
+  match_time: string; // "19:30:00"
+  competition: string;
+  stadium: string;
 };
 
 export default function Home() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [newsList, setNewsList] = useState<News[]>([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [matches, setMatches] = useState<Match[]>([]);
 
-  // Ambil data user dari backend Express
-  const fetchUsers = async () => {
-    const res = await fetch("http://localhost:5000/users");
+  // ambil data berita dari backend Express
+  const fetchNews = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("http://localhost:5000/news");
+      const data = await res.json();
+      setNewsList(data);
+    } catch (err) {
+      console.error("Error fetch news:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchMatches = async () => {
+    const res = await fetch("http://localhost:5000/matches");
     const data = await res.json();
-    setUsers(data);
+    setMatches(data);
   };
 
   useEffect(() => {
-    fetchUsers();
+    fetchNews();
+    fetchMatches();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await fetch("http://localhost:5000/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, email }),
-    });
-    setName("");
-    setEmail("");
-    fetchUsers(); // refresh data
+    if (!title || !description || !date) {
+      alert("Isi semua field dulu");
+      return;
+    }
+
+    try {
+      await fetch("http://localhost:5000/news", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, description, date }),
+      });
+
+      // reset form
+      setTitle("");
+      setDescription("");
+      setDate("");
+
+      // refresh berita
+      fetchNews();
+    } catch (err) {
+      console.error("Error add news:", err);
+    }
   };
+    const formatDate = (dateStr: string) => {
+    return new Date(dateStr).toLocaleDateString("id-ID", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const formatTime = (timeStr: string) => {
+    // ambil jam-menit dari "HH:MM:SS"
+    return timeStr.slice(0, 5) + " WIB";
+  };
+
+
+  
   return (
     <main>
-      <h1>Users from Express + MySQL</h1>
-
-      <form onSubmit={handleSubmit} style={{ marginBottom: 20 }}>
-        <div>
-          <input
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div>
-          <input
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <button type="submit">Add User</button>
-      </form>
-
-      <ul>
-        {users.map((u) => (
-          <li key={u.id}>
-            {u.id} - {u.name} ({u.email})
-          </li>
-        ))}
-      </ul>
-
-
-
-
-
-
-
-
-
 
       {/* Hero Section */}
       <section id="home" className="hero">
@@ -91,214 +113,158 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="berita" className="content-page">
-  <h1 className="section-title">Berita Terbaru</h1>
   
-  <div className="news-list">
-    {/* Berita 1 */}
-    <article className="news-card-horizontal">
--      <div className="news-image">
-        <Image
-          src="/images/news/indonesia.jpg"
-          alt="Indonesia menang 4-0 atas Thailand"
-          width={400}
-          height={250}
-          className="img-cover"
-          priority // optional: load faster jika di atas fold
-        />
-      </div>
-      <div className="news-content">
-        <h3>Indonesia Menang Telak 4-0 atas Thailand</h3>
-        <p>
-          Timnas Indonesia tampil gemilang di laga persahabatan melawan Thailand, 
-          mencatat kemenangan meyakinkan 4-0 di Stadion Utama Gelora Bung Karno. 
-          Gol dicetak oleh Ragnar Oratmangoen (2x), Marselino Ferdinan, dan Witan Sulaeman.
-        </p>
-        <time className="news-date">29 Oktober 2025</time>
-      </div>
-    </article>
+      <section id="berita" className="content-page">
+      <h1 className="section-title">Berita Terbaru</h1>
 
-    {/* Berita 2 */}
-    <article className="news-card-horizontal">
-      <div className="news-image">
-        <Image
-          src="/images/news/shin-tae-yong.jpg"
-          alt="Shin Tae-yong umumkan daftar pemain Piala Asia 2025"
-          width={400}
-          height={250}
-          className="img-cover"
-        />
-      </div>
-      <div className="news-content">
-        <h3>Shin Tae-yong Umumkan Daftar Pemain Piala Asia</h3>
-        <p>
-          Pelatih kepala Timnas Indonesia, Shin Tae-yong, resmi mengumumkan 26 nama pemain 
-          yang akan berlaga di Piala Asia 2025. Nama-nama seperti Egy Maulana Vikri, 
-          Asnawi Mangkualam, dan Stefano Lilipaly masuk dalam daftar.
-        </p>
-        <time className="news-date">28 Oktober 2025</time>
-      </div>
-    </article>
-  </div>
-</section>  
+      {loading ? (
+            <p>Sedang memuat berita...</p>
+          ) : newsList.length === 0 ? (
+            <p>Belum ada berita.</p>
+          ) :(
+            <ul className="news-list">
+              {newsList.map((berita)=>(
+                <li
+                  key={berita.id}
+                >
+                  <div className="news-card-horizontal">
+                      <div className="news-image">
+                            <Image
+                              src="/images/news/indonesia.jpg"
+                              alt="Indonesia menang 4-0 atas Thailand"
+                              width={400}
+                              height={250}
+                              className="img-cover"
+                              priority // optional: load faster jika di atas fold
+                            />
+                          </div>
+                        <div className="news-content">
+                        <h3>{berita.title}</h3>
+                        <p>{berita.description}</p>
+                        <time className="news-date">{berita.date}</time>
+                      </div>
+                  </div>
+                
+                </li>
+              ))}
+              
+            </ul>
+          )
+        }
+        </section>
 
 
+          {/* === Jadwal Section dengan Bendera === */}
+          <section id="jadwal" className="content-page">
+            <h1>Jadwal Pertandingan Timnas Indonesia</h1>
+                {matches.length === 0 ? (
+                <p>Belum ada jadwal pertandingan.</p>
+                ) : (
+                  <ul>
+                    {matches.map((jwl)=>
+                    <li
+                      key={jwl.id}
+                    >
+                      <div className="schedule-card">
+                        <div className="match-date">{jwl.match_date}</div>
+                        <div className="match-info">
+                          <div className="team">
+                            <Image
+                              src="/images/flags/indonesia.png"
+                              alt="Indonesia"
+                              width={32}
+                              height={32}
+                              className="flag"
+                            />
+                            <span className="team-home">{jwl.home_team}</span>
+                          </div>
+                          <span className="vs">vs</span>
+                          <div className="team">
+                            <Image
+                              src="/images/flags/australia.svg"
+                              alt="Australia"
+                              width={32}
+                              height={32}
+                              className="flag"
+                            />
+                            <span className="team-away">{jwl.away_team}</span>
+                          </div>
+                        </div>
+                        <div className="match-details">
+                          <p>{jwl.competition}</p>
+                          <p className="time">{jwl.match_time}</p>
+                        </div>
+                      </div>
 
-    {/* === Jadwal Section dengan Bendera === */}
-    <section id="jadwal" className="content-page">
-      <h1>Jadwal Pertandingan Timnas Indonesia</h1>
-      <div className="schedule-list">
-        {/* Pertandingan 1 */}
-        <div className="schedule-card">
-          <div className="match-date">12 November 2025</div>
-          <div className="match-info">
-            <div className="team">
-              <Image
-                src="/images/flags/indonesia.png"
-                alt="Indonesia"
-                width={32}
-                height={32}
-                className="flag"
-              />
-              <span className="team-home">Indonesia</span>
-            </div>
-            <span className="vs">vs</span>
-            <div className="team">
-              <Image
-                src="/images/flags/australia.svg"
-                alt="Australia"
-                width={32}
-                height={32}
-                className="flag"
-              />
-              <span className="team-away">Australia</span>
-            </div>
-          </div>
-          <div className="match-details">
-            <p>Kualifikasi Piala Dunia 2026 • Stadion Utama Gelora Bung Karno</p>
-            <p className="time">19:30 WIB</p>
-          </div>
-        </div>
+                    </li>
+                    )}
+                  </ul>
 
-        {/* Pertandingan 2 */}
-        <div className="schedule-card">
-          <div className="match-date">17 November 2025</div>
-          <div className="match-info">
-            <div className="team">
-              <Image
-                src="/images/flags/bahrain.svg"
-                alt="Bahrain"
-                width={32}
-                height={32}
-                className="flag"
-              />
-              <span className="team-home">Bahrain</span>
-            </div>
-            <span className="vs">vs</span>
-            <div className="team">
-              <Image
-                src="/images/flags/indonesia.png"
-                alt="Indonesia"
-                width={32}
-                height={32}
-                className="flag"
-              />
-              <span className="team-away">Indonesia</span>
-            </div>
-          </div>
-          <div className="match-details">
-            <p>Kualifikasi Piala Dunia 2026 • Bahrain National Stadium</p>
-            <p className="time">22:00 WIB</p>
-          </div>
-        </div>
+                )}
+            </section>
 
-        {/* Pertandingan 3 */}
-        <div className="schedule-card">
-          <div className="match-date">10 Januari 2026</div>
-          <div className="match-info">
-            <div className="team">
-              <Image
-                src="/images/flags/indonesia.png"
-                alt="Indonesia"
-                width={32}
-                height={32}
-                className="flag"
-              />
-              <span className="team-home">Indonesia</span>
-            </div>
-            <span className="vs">vs</span>
-            <div className="team">
-              <Image
-                src="/images/flags/japan.png"
-                alt="Jepang"
-                width={32}
-                height={32}
-                className="flag"
-              />
-              <span className="team-away">Jepang</span>
-            </div>
-          </div>
-          <div className="match-details">
-            <p>Piala Asia 2025 • Grup A</p>
-            <p className="time">18:00 WIB</p>
-          </div>
-        </div>
-      </div>
-    </section>
 
-      {/* === Pemain Section === */}
-      <section id="pemain" className="content-page">
-        <h1>Daftar Pemain Timnas Indonesia</h1>
-        <div className="player-grid">
 
-          {/* Player 1 */}
-          <a href="/player/asnawi">
-            <div className="player-card">
-                <img
-                  src="/images/players/asnawi.jpg"
-                  alt="Asnawi Mangkualam"
-                  className="player-img"
-                  width={300}      // any number, will be scaled
-                  height={300}
-                />
-                <h3>Asnawi Mangkualam</h3>
-                <p>Bek Kanan</p>
-            </div>
-          </a>
 
-          {/* Player 2 */}
-          <a href="/player/marc-klok">
-            <div className="player-card">
-                <img
-                  src="/images/players/marc-klok.jpg"
-                  alt="Marc Klok"
-                  className="player-img"
-                  width={300}      // any number, will be scaled
-                  height={300}
-                />
-                <h3>Marc Klok</h3>
-                <p>Gelandang</p>          
-            </div>
-          </a>
 
-          {/* Player 3 */}  
-          <a href="/player/rizky-ridho">
-            <div className="player-card">
-                <img
-                  src="/images/players/rizky-ridho.jpg"
-                  alt="Rizky Ridho"
-                  className="player-img"
-                  width={300}      // any number, will be scaled
-                  height={300}
-                />
-                <h3>Rizky Ridho</h3>
-                <p>Bek Tengah</p>            
-            </div>
-          </a>
 
-          {/* Add more players the same way */}
-        </div>
-</section>
+
+
+            
+
+            {/* === Pemain Section === */}
+            <section id="pemain" className="content-page">
+              <h1>Daftar Pemain Timnas Indonesia</h1>
+              <div className="player-grid">
+
+                {/* Player 1 */}
+                <a href="/player/asnawi">
+                  <div className="player-card">
+                      <img
+                        src="/images/players/asnawi.jpg"
+                        alt="Asnawi Mangkualam"
+                        className="player-img"
+                        width={300}      // any number, will be scaled
+                        height={300}
+                      />
+                      <h3>Asnawi Mangkualam</h3>
+                      <p>Bek Kanan</p>
+                  </div>
+                </a>
+
+                {/* Player 2 */}
+                <a href="/player/marc-klok">
+                  <div className="player-card">
+                      <img
+                        src="/images/players/marc-klok.jpg"
+                        alt="Marc Klok"
+                        className="player-img"
+                        width={300}      // any number, will be scaled
+                        height={300}
+                      />
+                      <h3>Marc Klok</h3>
+                      <p>Gelandang</p>          
+                  </div>
+                </a>
+
+                {/* Player 3 */}  
+                <a href="/player/rizky-ridho">
+                  <div className="player-card">
+                      <img
+                        src="/images/players/rizky-ridho.jpg"
+                        alt="Rizky Ridho"
+                        className="player-img"
+                        width={300}      // any number, will be scaled
+                        height={300}
+                      />
+                      <h3>Rizky Ridho</h3>
+                      <p>Bek Tengah</p>            
+                  </div>
+                </a>
+
+                {/* Add more players the same way */}
+              </div>
+      </section>
     </main>
   );
 }
