@@ -122,7 +122,7 @@ app.post("/players", (req, res) => {
   }
 
   const sql = "INSERT INTO players (name, position) VALUES (?, ?)";
-  db.query(sql, [name, position], (err, result) => {
+  db.query(sql, [name, position, image_url], (err, result) => {
     if (err) return res.status(500).json({ error: err });
 
     res.json({

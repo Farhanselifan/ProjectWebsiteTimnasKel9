@@ -26,6 +26,8 @@ type Player = {
   id: number;
   name: string;
   position: string;
+  image_url: string;
+  dynamic_route: string;
 };
 
 export default function Home() {
@@ -238,23 +240,23 @@ export default function Home() {
               ): players.length === 0 ? (
                   <p> Belum ada pemain</p>
                 ) : (
-                  <ul>
+                  <ul className="player-grid">
                     {players.map((pemain)=>(
-                      <li  className="player-grid"
+                      <li  
                         key={pemain.id}
                       >
-                        <div >
-                          <a href="/player/asnawi">
+                        <div className="player-card">
+                          <a href={pemain.dynamic_route}>
                             <div className="player-card">
                                 <img
-                                  src="/images/players/asnawi.jpg"
-                                  alt="Asnawi Mangkualam"
+                                  src={pemain.image_url}           
+                                  alt={pemain.name}
                                   className="player-img"
-                                  width={300}      // any number, will be scaled
-                                  height={300}
+                                  width={30}      
+                                  height={30}
                                 />
-                                <h3>{pemain.name}</h3>
-                                <p>{pemain.position}</p>
+                                <h3 >{pemain.name}</h3>
+                                <p >{pemain.position}</p>
                             </div>
                            </a>
                         </div>

@@ -120,6 +120,59 @@
   margin-bottom: 15px;
 }
 
+
+/* ===== Player Cards ===== */
+
+.player-grid {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.player-card {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* if you want to target the img via className="player-img" */
+.player-card img,
+.player-img {
+  width: 50%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.player-card h3 {
+  color: #d91e1e;
+  margin-bottom: 5px;
+}
+
+.player-card p {
+  margin: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* ===== Page Layout ===== */
 .content-page {
   padding: 40px;
@@ -169,33 +222,6 @@
   color: white;
 }
 
-/* ===== Player Cards ===== */
-.player-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-
-.player-card {
-  background: white;
-  border-radius: 10px;
-  padding: 15px;
-  text-align: center;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.player-card img {
-  width: 50%;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-.player-card h3 {
-  color: #d91e1e;
-  margin-bottom: 5px;
-}
 
 html {
   scroll-behavior: smooth;
