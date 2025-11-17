@@ -199,7 +199,7 @@ export default function Home() {
                         <div className="match-info">
                           <div className="team">
                             <Image
-                              src="/images/flags/indonesia.png"
+                              src={jwl.home_images}
                               alt="Indonesia"
                               width={32}
                               height={32}
@@ -210,7 +210,7 @@ export default function Home() {
                           <span className="vs">vs</span>
                           <div className="team">
                             <Image
-                              src="/images/flags/australia.svg"
+                              src={jwl.away_images}
                               alt="Australia"
                               width={32}
                               height={32}
