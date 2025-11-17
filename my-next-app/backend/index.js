@@ -105,7 +105,69 @@ app.get("/matches", (req, res) => {
 
 // GET PEMAIN
 
+app.get("/players", (req, res) => {
+  const sql = "SELECT * FROM players ORDER BY name ASC";
+  db.query(sql, (err, results) => {
+    if (err) return res.status(500).json({ error: err });
+    res.json(results);
+  });
+});
 
+// POST tambah pemain
+app.post("/players", (req, res) => {
+  const { name, position } = req.body;
+
+  if (!name || !position) {
+    return res.status(400).json({ message: "name dan position wajib diisi" });
+  }
+
+  const sql = "INSERT INTO players (name, position) VALUES (?, ?)";
+  db.query(sql, [name, position], (err, result) => {
+    if (err) return res.status(500).json({ error: err });
+
+    res.json({
+      id: result.insertId,
+      name,
+      position,
+    });
+  });
+});
+
+// GET satu pemain by id
+app.get("/players/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = "SELECT * FROM players WHERE id = ?";
+  db.query(sql, [id], (err, results) => {
+    if (err) return res.status(500).json({ error: err });
+    if (results.length === 0)
+      return res.status(404).json({ message: "Pemain tidak ditemukan" });
+    res.json(results[0]);
+  });
+});
+
+// UPDATE pemain
+app.put("/players/:id", (req, res) => {
+  const { id } = req.params;
+  const { name, position } = req.body;
+
+  const sql = "UPDATE players SET name = ?, position = ? WHERE id = ?";
+  db.query(sql, [name, position, id], (err) => {
+    if (err) return res.status(500).json({ error: err });
+
+    res.json({ id, name, position });
+  });
+});
+
+// DELETE pemain
+app.delete("/players/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = "DELETE FROM players WHERE id = ?";
+  db.query(sql, [id], (err) => {
+    if (err) return res.status(500).json({ error: err });
+
+    res.json({ message: "Pemain dihapus" });
+  });
+});
 
 
 app.listen(PORT, () => {

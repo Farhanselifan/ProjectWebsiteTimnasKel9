@@ -22,6 +22,12 @@ type Match = {
   stadium: string;
 };
 
+type Player = {
+  id: number;
+  name: string;
+  position: string;
+};
+
 export default function Home() {
   const [newsList, setNewsList] = useState<News[]>([]);
   const [title, setTitle] = useState("");
@@ -29,6 +35,9 @@ export default function Home() {
   const [date, setDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [matches, setMatches] = useState<Match[]>([]);
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [name, setName] = useState("");
+  const [position, setPosition] = useState("");
 
   // ambil data berita dari backend Express
   const fetchNews = async () => {
@@ -50,9 +59,23 @@ export default function Home() {
     setMatches(data);
   };
 
+  const fetchPlayers = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("http://localhost:5000/players");
+      const data = await res.json();
+      setPlayers(data);
+    } catch (err) {
+      console.error("Error fetching players:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchNews();
     fetchMatches();
+    fetchPlayers();
   }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -96,6 +119,7 @@ export default function Home() {
     return timeStr.slice(0, 5) + " WIB";
   };
 
+  
 
   
   return (
@@ -204,66 +228,41 @@ export default function Home() {
             </section>
 
 
-
-
-
-
-
-
             
-
             {/* === Pemain Section === */}
             <section id="pemain" className="content-page">
               <h1>Daftar Pemain Timnas Indonesia</h1>
-              <div className="player-grid">
+            
+              {loading ?(
+                  <p> sedang memuat pemain</p>
+              ): players.length === 0 ? (
+                  <p> Belum ada pemain</p>
+                ) : (
+                  <ul>
+                    {players.map((pemain)=>(
+                      <li  className="player-grid"
+                        key={pemain.id}
+                      >
+                        <div >
+                          <a href="/player/asnawi">
+                            <div className="player-card">
+                                <img
+                                  src="/images/players/asnawi.jpg"
+                                  alt="Asnawi Mangkualam"
+                                  className="player-img"
+                                  width={300}      // any number, will be scaled
+                                  height={300}
+                                />
+                                <h3>{pemain.name}</h3>
+                                <p>{pemain.position}</p>
+                            </div>
+                           </a>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
 
-                {/* Player 1 */}
-                <a href="/player/asnawi">
-                  <div className="player-card">
-                      <img
-                        src="/images/players/asnawi.jpg"
-                        alt="Asnawi Mangkualam"
-                        className="player-img"
-                        width={300}      // any number, will be scaled
-                        height={300}
-                      />
-                      <h3>Asnawi Mangkualam</h3>
-                      <p>Bek Kanan</p>
-                  </div>
-                </a>
-
-                {/* Player 2 */}
-                <a href="/player/marc-klok">
-                  <div className="player-card">
-                      <img
-                        src="/images/players/marc-klok.jpg"
-                        alt="Marc Klok"
-                        className="player-img"
-                        width={300}      // any number, will be scaled
-                        height={300}
-                      />
-                      <h3>Marc Klok</h3>
-                      <p>Gelandang</p>          
-                  </div>
-                </a>
-
-                {/* Player 3 */}  
-                <a href="/player/rizky-ridho">
-                  <div className="player-card">
-                      <img
-                        src="/images/players/rizky-ridho.jpg"
-                        alt="Rizky Ridho"
-                        className="player-img"
-                        width={300}      // any number, will be scaled
-                        height={300}
-                      />
-                      <h3>Rizky Ridho</h3>
-                      <p>Bek Tengah</p>            
-                  </div>
-                </a>
-
-                {/* Add more players the same way */}
-              </div>
+              )}
       </section>
     </main>
   );
