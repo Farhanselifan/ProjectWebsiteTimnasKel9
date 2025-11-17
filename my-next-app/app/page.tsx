@@ -10,6 +10,7 @@ type News = {
   title: string;
   description: string;
   date: string; // dari backend format "YYYY-MM-DD"
+  news_images: string;
 };
 
 type Match = {
@@ -20,6 +21,8 @@ type Match = {
   match_time: string; // "19:30:00"
   competition: string;
   stadium: string;
+  home_images: string;
+  away_images: string;
 };
 
 type Player = {
@@ -156,7 +159,7 @@ export default function Home() {
                   <div className="news-card-horizontal">
                       <div className="news-image">
                             <Image
-                              src="/images/news/indonesia.jpg"
+                              src={berita.news_images}
                               alt="Indonesia menang 4-0 atas Thailand"
                               width={400}
                               height={250}
