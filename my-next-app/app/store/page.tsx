@@ -1,31 +1,75 @@
-// app/store/page.tsx
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+type Product = {
+  id: number;
+  name: string;
+  price: number;   // dari DB, misal 750000
+  image: string;   // path gambar, misal "/images/store/jersey-home.jpg"
+  badge: string;   // Official, Limited, New
+};
+
+const formatRupiah = (value: number) =>
+  new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0,
+  }).format(value);
 
 export default function StorePage() {
-  const products = [
-    {
-      id: 1,
-      name: "Jersey Home Timnas Indonesia 2025",
-      price: "Rp 750.000",
-      image: "/images/store/jersey-home.jpg",
-      badge: "Official",
-    },
-    {
-      id: 2,
-      name: "Jersey Away Garuda Putih",
-      price: "Rp 720.000",
-      image: "/images/store/jersey-away.jpg",
-      badge: "Limited",
-    },
-    {
-      id: 3,
-      name: "Bundle Kit Timnas 2025",
-      price: "Rp 650.000",
-      image: "/images/store/timnasbundle.jpg",
-      badge: "New",
-    },
-  ];
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // PENTING:
+      // Kalau Express kamu ada di port 5000, pastikan endpoint ini benar
+      const res = await fetch("http://localhost:5000/store_items", {
+        // optional: cache no-store supaya selalu fresh
+        cache: "no-store",
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      // Kalau backend kirim { items: [...] }
+      // ganti ke: const items = data.items;
+      // Di sini diasumsikan langsung array
+      if (!Array.isArray(data)) {
+        throw new Error("Response dari server bukan array produk");
+      }
+
+      // Optional: paksa harga ke number (kalau dari DB berupa string)
+      const normalized: Product[] = data.map((item: any) => ({
+        id: Number(item.id),
+        name: String(item.name),
+        price: Number(item.price),
+        image: String(item.image),
+        badge: String(item.badge ?? "Official"),
+      }));
+
+      setProducts(normalized);
+    } catch (err: any) {
+      console.error("Error fetch products:", err);
+      setError(err.message ?? "Gagal memuat produk");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
     <main className="store-page" style={{ fontFamily: "Arial, sans-serif" }}>
@@ -63,106 +107,107 @@ export default function StorePage() {
         </Link>
       </section>
 
-      {/* Products Grid */}
-      <section id="products" className="products-section" style={{ padding: "50px 20px" }}>
-        <h2
-          style={{
-            textAlign: "center",
-            fontSize: "32px",
-            marginBottom: "40px",
-          }}
+      {/* Products Section */}
+      <section
+        id="products"
+        className="content-page"
+        style={{ padding: "40px 20px" }}
+      >
+        <h1
+          className="section-title"
+          style={{ textAlign: "center", marginBottom: 30 }}
         >
           Produk Tersedia
-        </h2>
+        </h1>
 
-        <div
-          className="products-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-            gap: "30px",
-            maxWidth: "1000px",
-            margin: "0 auto",
-          }}
-        >
-          {products.map((product) => (
-            <Link
-              key={product.id}
-              href={`/store/${product.id}`}
-              style={{
-                textDecoration: "none",
-                color: "inherit",
-                border: "1px solid #ddd",
-                borderRadius: "10px",
-                overflow: "hidden",
-                boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                transition: "transform 0.2s",
-              }}
-            >
-              <div
-                className="product-card"
-                style={{
-                  background: "white",
-                  textAlign: "center",
-                }}
-              >
-                {product.badge && (
-                  <span
+        {loading && (
+          <p style={{ textAlign: "center" }}>Sedang memuat produk...</p>
+        )}
+
+        {!loading && error && (
+          <p style={{ textAlign: "center", color: "red" }}>
+            Gagal memuat produk: {error}
+          </p>
+        )}
+
+        {!loading && !error && products.length === 0 && (
+          <p style={{ textAlign: "center" }}>Belum ada produk.</p>
+        )}
+
+        {!loading && !error && products.length > 0 && (
+          <ul
+            className="product-list"
+            style={{
+              listStyle: "none",
+              padding: 0,
+              margin: 0,
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+              gap: "20px",
+            }}
+          >
+            {products.map((product) => (
+              <li key={product.id}>
+                <div
+                  className="product-card"
+                  style={{
+                    borderRadius: 12,
+                    overflow: "hidden",
+                    boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                    background: "white",
+                    display: "flex",
+                    flexDirection: "column",
+                    height: "100%",
+                  }}
+                >
+                  <div className="product-image">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      width={400}
+                      height={400}
+                      className="img-cover"
+                      style={{ width: "100%", height: "auto" }}
+                      priority
+                      // kalau pakai URL eksternal, pastikan ditambahkan di next.config.mjs -> images.remotePatterns
+                    />
+                  </div>
+
+                  <div
+                    className="product-content"
                     style={{
-                      display: "inline-block",
-                      marginTop: "10px",
-                      background:
-                        product.badge === "Official"
-                          ? "#e60000"
-                          : product.badge === "Limited"
-                          ? "#ff6600"
-                          : "#009933",
-                      color: "white",
-                      padding: "4px 10px",
-                      borderRadius: "6px",
-                      fontSize: "12px",
+                      padding: "12px 14px",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 6,
                     }}
                   >
-                    {product.badge}
-                  </span>
-                )}
-                <div className="product-image">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={300}
-                    height={300}
-                    style={{
-                      width: "100%",
-                      height: "250px",
-                      objectFit: "cover",
-                    }}
-                  />
+                    <span
+                      className="product-badge"
+                      style={{
+                        alignSelf: "flex-start",
+                        padding: "2px 10px",
+                        borderRadius: 999,
+                        border: "1px solid #ccc",
+                        fontSize: 12,
+                      }}
+                    >
+                      {product.badge}
+                    </span>
+
+                    <h3 style={{ margin: "4px 0", fontSize: 16 }}>
+                      {product.name}
+                    </h3>
+
+                    <strong style={{ fontSize: 16, color: "#e60000" }}>
+                      {formatRupiah(product.price)}
+                    </strong>
+                  </div>
                 </div>
-                <div className="product-info" style={{ padding: "15px" }}>
-                  <h3 style={{ fontSize: "20px", marginBottom: "10px" }}>
-                    {product.name}
-                  </h3>
-                  <p
-                    className="price"
-                    style={{ color: "#e60000", fontWeight: "bold" }}
-                  >
-                    {product.price}
-                  </p>
-                  <p
-                    style={{
-                      color: "#0066cc",
-                      marginTop: "10px",
-                      fontSize: "14px",
-                    }}
-                  >
-                    Klik untuk melihat detail →
-                  </p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       {/* Back to Home */}

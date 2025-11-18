@@ -170,6 +170,23 @@ app.delete("/players/:id", (req, res) => {
 });
 
 
+
+app.get("/store_items", (req, res) => {
+  const sql = "SELECT * FROM store_items ORDER BY id ASC";
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error("Error get store_items:", err);
+      return res.status(500).json({ error: "Failed to fetch store items" });
+    }
+
+    // PENTING → langsung array
+    res.json(results);
+  });
+});
+
+
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
