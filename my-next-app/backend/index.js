@@ -186,6 +186,24 @@ app.get("/store_items", (req, res) => {
 });
 
 
+// GET /api/products/:dynamic_route
+app.get('/products', async (req, res) => {
+  const dynamic_route = req.params.dynamic_route;
+
+  const [rows] = await db.execute(
+    'SELECT * FROM products WHERE dynamic_route = ? LIMIT 1',
+    [dynamic_route]
+  );
+
+  if (rows.length === 0) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+
+  res.json(rows[0]);
+});
+
+
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

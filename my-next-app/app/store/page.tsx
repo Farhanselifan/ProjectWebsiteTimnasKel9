@@ -10,6 +10,7 @@ type Product = {
   price: number;   // dari DB, misal 750000
   image: string;   // path gambar, misal "/images/store/jersey-home.jpg"
   badge: string;   // Official, Limited, New
+  dynamic_route: string;
 };
 
 const formatRupiah = (value: number) =>
@@ -23,53 +24,37 @@ export default function StorePage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      // PENTING:
-      // Kalau Express kamu ada di port 5000, pastikan endpoint ini benar
-      const res = await fetch("http://localhost:5000/store_items", {
-        // optional: cache no-store supaya selalu fresh
-        cache: "no-store",
-      });
-
-      if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-      }
-
-      const data = await res.json();
-
-      // Kalau backend kirim { items: [...] }
-      // ganti ke: const items = data.items;
-      // Di sini diasumsikan langsung array
-      if (!Array.isArray(data)) {
-        throw new Error("Response dari server bukan array produk");
-      }
-
-      // Optional: paksa harga ke number (kalau dari DB berupa string)
-      const normalized: Product[] = data.map((item: any) => ({
-        id: Number(item.id),
-        name: String(item.name),
-        price: Number(item.price),
-        image: String(item.image),
-        badge: String(item.badge ?? "Official"),
-      }));
-
-      setProducts(normalized);
-    } catch (err: any) {
-      console.error("Error fetch products:", err);
-      setError(err.message ?? "Gagal memuat produk");
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  
   useEffect(() => {
-    fetchProducts();
+    async function loadProducts() {
+      try {
+        const res = await fetch("http://localhost:5000/store_items"); // contoh
+        if (!res.ok) {
+          throw new Error("Gagal fetch produk");
+        }
+
+        // misal response-nya array JSON
+        const data = await res.json();
+
+        // PENTING: jangan ubah nama field di sini
+        // asumsikan data = Product[]
+        setProducts(data);
+      } catch (err: any) {
+        console.error(err);
+        setError("Gagal memuat produk");
+      }
+    }
+
+    loadProducts();
   }, []);
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  if (products.length === 0) {
+    return <p>Memuat produk...</p>;
+  }
 
   return (
     <main className="store-page" style={{ fontFamily: "Arial, sans-serif" }}>
@@ -160,11 +145,16 @@ export default function StorePage() {
                     height: "100%",
                   }}
                 >
-                  <div className="product-image">
+                  <a href={product.dynamic_route}>
+                  <div 
+                    className="product-image"
+                    
+                  >
                     <Image
                       src={product.image}
                       alt={product.name}
                       width={400}
+                      
                       height={400}
                       className="img-cover"
                       style={{ width: "100%", height: "auto" }}
@@ -203,7 +193,9 @@ export default function StorePage() {
                       {formatRupiah(product.price)}
                     </strong>
                   </div>
+                  </a>
                 </div>
+                
               </li>
             ))}
           </ul>
