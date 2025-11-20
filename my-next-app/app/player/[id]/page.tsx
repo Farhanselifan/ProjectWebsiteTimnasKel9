@@ -84,7 +84,7 @@ const PLAYERS: Player[] = [
     weight: "75 kg",
     photo: "/images/players/marc-klok.jpg",
     bio:
-      "Marc Klok: gelandang dengan visi permainan yang baik, kreator serangan dari lini tengah.",
+      "Marc Klok adalah  gelandang dengan visi permainan yang baik, kreator serangan dari lini tengah.",
     stats: { appearances: 30, goals: 5, assists: 10, yellowCards: 4, redCards: 0 },
   },
   {
@@ -98,7 +98,49 @@ const PLAYERS: Player[] = [
     weight: "75 kg",
     photo: "/images/players/rizky-ridho.jpg",
     bio:
-      "Rizky Ridho : gelandang dengan visi permainan yang baik, kreator serangan dari lini tengah.",
+      "Rizky Ridho adalah gelandang dengan visi permainan yang baik, kreator serangan dari lini tengah.",
+    stats: { appearances: 30, goals: 5, assists: 10, yellowCards: 4, redCards: 0 },
+  },
+    {
+    id: "marteen",
+    name: "Marteen Paes",
+    number: 1,
+    position: "Kiper",
+    club: "FC Dallas",
+    age: 27,
+    height: "180 cm",
+    weight: "75 kg",
+    photo: "/images/players/Marteen-Paes.jpg",
+    bio:
+      "Marteen Paes adalah Kiper Timnas Indonesia yang berasal dari Amerika Serikat yang bermain juga di club FC Dallas.",
+    stats: { appearances: 30, goals: 5, assists: 10, yellowCards: 4, redCards: 0 },
+  },
+    {
+    id: "ernando",
+    name: "Ernando Ari",
+    number: 12,
+    position: "Kiper",
+    club: "Persebaya Surabaya",
+    age: 23,
+    height: "180 cm",
+    weight: "75 kg",
+    photo: "/images/players/Ernando-Ari.jpg",
+    bio:
+      "Ernando Ari adalah Kiper Timnas Indonesia yang berasal dari indonesia yang bermain juga di club Persebaya SurabayaSS.",
+    stats: { appearances: 30, goals: 5, assists: 10, yellowCards: 4, redCards: 0 },
+  },
+    {
+    id: "nadeo",
+    name: "Nadeo Argawinata",
+    number: 12,
+    position: "Kiper",
+    club: "Borneo Samarinda",
+    age: 28,
+    height: "180 cm",
+    weight: "75 kg",
+    photo: "/images/players/Nadeo-Argawinata.jpg",
+    bio:
+      "Nadeo Argawinata adalah Kiper Timnas Indonesia yang berasal dari indonesia yang bermain juga di club Borneo Samarinda.",
     stats: { appearances: 30, goals: 5, assists: 10, yellowCards: 4, redCards: 0 },
   },
 ];
