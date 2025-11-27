@@ -92,6 +92,17 @@ app.get("/news", (req, res) => {
   });
 });
 
+// GET NEWS by id
+app.get("/news/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = "SELECT * FROM news WHERE id = ? LIMIT 1";
+  db.query(sql, [id], (err, results) => {
+    if (err) return res.status(500).json({ error: err });
+    if (!results || results.length === 0) return res.status(404).json({ message: "Berita tidak ditemukan" });
+    res.json(results[0]);
+  });
+});
+
 // GET JADWAL
 app.get("/matches", (req, res) => {
   const sql = "SELECT * FROM matches ORDER BY match_date, match_time";
