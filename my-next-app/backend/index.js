@@ -30,58 +30,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Express backend is running" });
 });
 
-// GET semua user
-app.get("/users", (req, res) => {
-  const sql = "SELECT * FROM users";
-  db.query(sql, (err, results) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json(results);
-  });
-});
-
-// POST tambah user
-app.post("/users", (req, res) => {
-  const { name, email } = req.body;
-  const sql = "INSERT INTO users (name, email) VALUES (?, ?)";
-  db.query(sql, [name, email], (err, result) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json({ id: result.insertId, name, email });
-  });
-});
-
-// GET user by id
-app.get("/users/:id", (req, res) => {
-  const { id } = req.params;
-  const sql = "SELECT * FROM users WHERE id = ?";
-  db.query(sql, [id], (err, results) => {
-    if (err) return res.status(500).json({ error: err });
-    if (results.length === 0) return res.status(404).json({ message: "Not found" });
-    res.json(results[0]);
-  });
-});
-
-// PUT update user
-app.put("/users/:id", (req, res) => {
-  const { id } = req.params;
-  const { name, email } = req.body;
-  const sql = "UPDATE users SET name = ?, email = ? WHERE id = ?";
-  db.query(sql, [name, email, id], (err) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json({ id, name, email });
-  });
-});
-
-// DELETE user
-app.delete("/users/:id", (req, res) => {
-  const { id } = req.params;
-  const sql = "DELETE FROM users WHERE id = ?";
-  db.query(sql, [id], (err) => {
-    if (err) return res.status(500).json({ error: err });
-    res.json({ message: "Deleted" });
-  });
-});
-
-// REAL CODE 
+ 
 
 // GET NEWS 
 app.get("/news", (req, res) => {
@@ -113,25 +62,6 @@ app.get("/players", (req, res) => {
   });
 });
 
-// POST tambah pemain
-app.post("/players", (req, res) => {
-  const { name, position } = req.body;
-
-  if (!name || !position) {
-    return res.status(400).json({ message: "name dan position wajib diisi" });
-  }
-
-  const sql = "INSERT INTO players (name, position) VALUES (?, ?)";
-  db.query(sql, [name, position, image_url], (err, result) => {
-    if (err) return res.status(500).json({ error: err });
-
-    res.json({
-      id: result.insertId,
-      name,
-      position,
-    });
-  });
-});
 
 // GET satu pemain by id
 app.get("/players/:id", (req, res) => {
@@ -145,29 +75,6 @@ app.get("/players/:id", (req, res) => {
   });
 });
 
-// UPDATE pemain
-app.put("/players/:id", (req, res) => {
-  const { id } = req.params;
-  const { name, position } = req.body;
-
-  const sql = "UPDATE players SET name = ?, position = ? WHERE id = ?";
-  db.query(sql, [name, position, id], (err) => {
-    if (err) return res.status(500).json({ error: err });
-
-    res.json({ id, name, position });
-  });
-});
-
-// DELETE pemain
-app.delete("/players/:id", (req, res) => {
-  const { id } = req.params;
-  const sql = "DELETE FROM players WHERE id = ?";
-  db.query(sql, [id], (err) => {
-    if (err) return res.status(500).json({ error: err });
-
-    res.json({ message: "Pemain dihapus" });
-  });
-});
 
 
 
@@ -187,19 +94,61 @@ app.get("/store_items", (req, res) => {
 
 
 // GET /api/products/:dynamic_route
-app.get('/products', async (req, res) => {
-  const dynamic_route = req.params.dynamic_route;
+app.get("/product", (req, res) => {
+  const sql = "SELECT * FROMproducts"; // tidak ada WHERE ?, tidak perlu parameter
 
-  const [rows] = await db.execute(
-    'SELECT * FROM products WHERE dynamic_route = ? LIMIT 1',
-    [dynamic_route]
-  );
+  db.execute(sql, [], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Error mengambil produk" });
+    }
+    res.json(results);
+  });
+});
 
-  if (rows.length === 0) {
-    return res.status(404).json({ message: 'Product not found' });
+
+// CREATE news
+app.post("/news", (req, res) => {
+  console.log("BODY DITERIMA:", req.body);
+
+  const { title, description, news_images, date } = req.body;
+
+  // Validasi minimal, TANPA cek date
+  if (!title || !description || !news_images) {
+    return res
+      .status(400)
+      .json({ message: "title, description, news_images wajib diisi" });
   }
 
-  res.json(rows[0]);
+  // Date boleh kosong → kalau kosong, backend isi otomatis
+  // Format: "27 NOVEMBER 2025"
+  let tanggal;
+  if (!date || date.trim() === "") {
+    tanggal = todayString();
+  } else {
+    // Pakai apa adanya dari frontend, misal:
+    // "17 SEPTEMBER 2025", "15 Sep", dll
+    tanggal = date;
+  }
+
+  const sql =
+    "INSERT INTO news (title, description, news_images, date) VALUES (?, ?, ?, ?)";
+  const values = [title, description, news_images, tanggal];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("DB ERROR:", err);
+      return res.status(500).json({ message: "DB error", error: err });
+    }
+
+    return res.status(201).json({
+      id: result.insertId,
+      title,
+      description,
+      news_images,
+      date: tanggal, // string bebas
+    });
+  });
 });
 
 
