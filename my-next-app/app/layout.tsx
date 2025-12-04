@@ -19,7 +19,8 @@ export default function RootLayout({
           <ul className="navbar-menu">
             <li><a href="/">Home</a></li>
             <li><a href="/player">Player</a></li>
-            <li><a href="/store" className="btn-secondary">Store</a></li> 
+            <li><a href="/store" className="btn-secondary">Store</a></li>
+             <li><a href="/profile">Profil</a></li>
             <li><a href="/login">Login</a></li>
           </ul>
         </nav>
